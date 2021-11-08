@@ -1,0 +1,80 @@
+// flex
+$flex-d: (
+	"flex": flex,
+	"block": block,
+	"inline-block": inline-block
+);
+
+$flex-jc: (
+	start: flex-start,
+	end: flex-end,
+	center: center,
+	between: space-between,
+	around: space-around
+);
+
+$flex-ai: (
+	start: flex-start,
+	end: flex-end,
+	center: center,
+	stretch: stretch
+);
+
+$flex-ai-self: (
+	start: flex-start,
+	auto: auto,
+	end: flex-end,
+	stretch: stretch,
+	baseline: baseline
+);
+
+// margin-padding
+$mpSize: (
+	"0": 0,
+	"1": 1,
+	"2": 2,
+	"3": 3,
+	"4": 4,
+	"5": 5
+);
+
+$mpType: (
+	m: "margin",
+	p: "padding"
+);
+
+$mpDirections: (
+	t: top,
+	r: right,
+	b: bottom,
+	l: left
+);
+
+// color
+$colorType: (
+	text: "color",
+	bg: "background-color",
+	border: "border-color"
+);
+
+$color: (
+	"black": #000,
+	"gray-darker": #333,
+	"gray-dark": #999,
+	"gray-middle": #525c64,
+	"gray": #ccc,
+	"gray-light": #f5f5f5,
+	"white": #fff,
+	"red": #ff4949,
+	"blue": #409eff,
+	"blue-dark": #0064cd,
+	"orange": #f47837,
+	"green": #13ce66,
+	"yellow": #ffc40d,
+	"pink": #c3325f,
+	"purple": #b6a2de,
+	"primary": var(--primary, #61b2ee)
+);
+
+// text
+$fontSize: (12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32);

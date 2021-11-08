@@ -1,0 +1,129 @@
+@charset "UTF-8";
+//-----------------------------------------------------
+// setting scss
+//-----------------------------------------------------
+
+// 开关设置
+//-----------------------------------------------------
+$lte7: true !default; //是否兼容ie6-7
+$filter: false !default; //是否为ie6-8开启css3滤镜兼容，常用于渐变背景
+$printStyleSwitch: false !default; //是否开启打印样式
+
+// font相关
+//-----------------------------------------------------
+$baseFontSize: 12px !default;
+$baseLineHeight: 2 !default;
+$baseFontFamily: "Helvetica Neue", Helvetica, Tahoma, sans-serif !default;
+$fontCn: "SimSun"; //宋体
+$fontYaHei: "Microsoft Yahei"; //微软雅黑
+$fontHeiTi: "SimHei"; //黑体
+
+// 元素上下间距
+//-----------------------------------------------------
+$baseGap: 20px !default;
+
+// 基本颜色
+// color function : http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html
+// lighten($color, $amount)
+// darken($color, $amount)
+// opacify($color, $amount)
+// mix($color1, $color2[, $amount])
+//-----------------------------------------------------
+$black: #000 !default;
+$grayDarker: #333 !default;
+$grayDark: #999 !default;
+$gray: #ccc !default;
+$grayLight: #f5f5f5 !default;
+$white: #fff !default;
+
+$red: #ff4949 !default;
+$blue: #409eff !default;
+$blueDark: #0064cd !default;
+$orange: #f47837 !default;
+$green: #13ce66 !default;
+$yellow: #ffc40d !default;
+$pink: #c3325f !default;
+$purple: #b6a2de !default;
+
+//macaron色系
+$cream: #f16d7a !default;
+$rose: #e27386 !default;
+$rosep: #f55066 !default;
+$anperiaru: #ef5464 !default;
+$almond: #ae716e !default;
+$choco: #cb8e85 !default;
+$kernel: #cf8878 !default;
+$raspberry: #c86f67 !default;
+$caramel: #f1ccbe !default;
+$vanilla: #f2debd !default;
+$matcha: #b7d28d !default;
+$pistachio: #dcff93 !default;
+$wcoffee: #ff9b6a !default;
+$mpink: #f1b8e4 !default;
+$mpurple: #d9b8f1 !default;
+$morange: #f1ccb8 !default;
+$myellow: #f1f1b8 !default;
+$mgreen: #b8f1cc !default;
+$aniyu: #e7dac9 !default;
+$vine: #e1622f !default;
+$grapefruit: #f3d64e !default;
+$rfruit: #fd7d36 !default;
+$cheese: #fe9778 !default;
+$lavender: #c38e9e !default;
+$mchoco: #f28869 !default;
+$damian: #de772c !default;
+$nutchoco: #e96a25 !default;
+$bcurrant: #ca7497 !default;
+$passion: #e29e4b !default;
+$powaru: #edbf2b !default;
+$mango: #fecf45 !default;
+$mgrapefruit: #f9b747 !default;
+$mbrown: #c17e61 !default;
+$nougat: #ed9678 !default;
+$pineapple: #ffe543 !default;
+$tea: #e37c5b !default;
+$ochoco: #ff8240 !default;
+$cherry: #aa5b71 !default;
+$bananu: #f0b631 !default;
+$kurakkure: #cf8888 !default;
+
+$primary: var(--primary, #61B2EE) !default; //主色
+//#61B2EE
+
+// link
+//-----------------------------------------------------
+// 如果只有一个值则滑过的值为这个值的darken 5%，如果
+// 有两个值则第二个值为滑过的值
+$linkColor: #08c !default;
+
+// scaffolding
+//-----------------------------------------------------
+$bodyBgColor: $white !default;
+$textColor: $grayDarker !default;
+
+// placeholder
+//-----------------------------------------------------
+// 变量分别为：是否输出表单的占位符placeholder样式，文本色
+$placeholder: true $gray !default;
+
+// 交互配色
+// 警告，错误，成功，提示
+//-----------------------------------------------------
+// 每个变量都有三个颜色值，分别为：文本色，背景色，边框色
+$warningColor: #514721 #fff6bf #ffd324 !default;
+$errorColor: #8a1f11 #fbe3e4 #fbc2c4 !default;
+$successColor: #264409 #e6efc2 #c6d880 !default;
+$infoColor: #205791 #d5edf8 #92cae4 !default;
+
+// radius
+//-----------------------------------------------------
+$baseRadius: 5px !default;
+$smallRadius: 3px !default;
+
+// z-index
+//-----------------------------------------------------
+$zindexDropdown: 1000 !default;
+$zindexFixedTopbar: 1010 !default;
+$zindexTooltip: 1020 !default;
+$zindexAlert: 1030 !default;
+$zindexModal: 1100 !default;

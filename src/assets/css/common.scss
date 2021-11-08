@@ -1,0 +1,261 @@
+@import "./base/setting";
+@import "./base/reset";
+@import "./base/base";
+
+// display: flex | block | inline-block
+@each $key, $value in $flex-d {
+	.d-#{$key} {
+		display: $value;
+	}
+}
+
+// justify-content: center
+@each $key, $value in $flex-jc {
+	.jc-#{$key} {
+		justify-content: $value;
+	}
+}
+
+// align-items: center ...
+@each $key, $value in $flex-ai {
+	.ai-#{$key} {
+		align-items: $value;
+	}
+}
+
+// align-self: end  ...
+@each $key, $value in $flex-ai-self {
+	.ai-self-#{$key} {
+		align-self: $value;
+	}
+}
+
+// mrgin-padding 相关
+@each $typeKey, $typeValue in $mpType {
+	@each $drtKey, $drtValue in $mpDirections {
+		@each $sizeKey, $sizeValue in $mpSize {
+			// mt-0
+			.#{$typeKey}#{$drtKey}-#{$sizeKey} {
+				#{$typeValue}-#{$drtValue}: $sizeValue * 10px !important;
+			}
+		}
+
+		// mt-auto
+		.#{$typeKey}#{$drtKey}-auto {
+			#{$typeValue}-#{$drtValue}: auto;
+		}
+	}
+
+	@each $sizeKey, $sizeValue in $mpSize {
+		// m-0 ...
+		.#{$typeKey}-#{$sizeKey} {
+			#{$typeValue}: $sizeValue * 10px;
+		}
+
+		// px
+		.#{$typeKey}x-#{$sizeKey} {
+			#{$typeValue}-right: $sizeValue * 10px;
+			#{$typeValue}-left: $sizeValue * 10px;
+		}
+
+		// py
+		.#{$typeKey}y-#{$sizeKey} {
+			#{$typeValue}-top: $sizeValue * 10px;
+			#{$typeValue}-bottom: $sizeValue * 10px;
+		}
+	}
+}
+
+// color 相关--font | background | border
+@each $colorTypeKey, $colorTypeValue in $colorType {
+	@each $colorKey, $colorValue in $color {
+		.#{$colorTypeKey}-#{$colorKey} {
+			#{$colorTypeValue}: $colorValue !important;
+		}
+	}
+}
+
+// size
+@each $val in $fontSize {
+	.font-#{$val} {
+		font-size: $val * 1px;
+	}
+
+	.lh-#{$val} {
+		line-height: $val * 0.1;
+	}
+}
+
+/* base 
+   ========================================================================== */
+// 导航条
+::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	background: rgba(144, 147, 153, 0.5);
+}
+
+::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+	background: pink;
+}
+
+::-webkit-scrollbar-track-piece {
+	background-color: #eee;
+}
+
+// 浮动
+.fl {
+	float: left;
+}
+
+.fr {
+	float: right;
+}
+
+.cf {
+	zoom: 1;
+}
+
+.cf:after {
+	content: ".";
+	visibility: hidden;
+	clear: both;
+	display: block;
+	height: 0;
+}
+
+.clear {
+	clear: both;
+	line-height: 0;
+}
+
+.vm {
+	vertical-align: middle;
+	display: inline-block;
+}
+
+// 定位
+.po-relative {
+	position: relative;
+}
+
+.po-absolute {
+	position: absolute;
+}
+
+.po-fixed {
+	position: fixed;
+}
+
+// 溢出隐藏
+.woh {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+// text
+.ta-center {
+	text-align: center;
+}
+
+// flex
+.flex-1 {
+	flex: 1;
+}
+
+.flex-column {
+	flex-direction: column;
+}
+
+.flex-row {
+	flex-direction: row;
+}
+
+.flex-wrap {
+	flex-wrap: wrap;
+}
+
+.flex-nowrap {
+	flex-wrap: nowrap;
+}
+
+// font-weight
+.fw-200 {
+	font-weight: 200;
+}
+
+.fw-400 {
+	font-weight: 400;
+}
+
+.fw-600 {
+	font-weight: 600;
+}
+
+// 宽度
+.w-100 {
+	width: 100%;
+}
+
+.w-30 {
+	width: 30%;
+}
+
+.w-20 {
+	width: 20%;
+}
+
+.w-10 {
+	width: 10%;
+}
+
+// 高度
+.h-100 {
+	height: 100%;
+}
+
+// 指针
+.cu-p {
+	cursor: pointer;
+}
+
+.t-10 {
+	top: 10px;
+}
+
+.b-10 {
+	bottom: 10px;
+}
+
+.l-10 {
+	left: 10px;
+}
+
+.r-10 {
+	right: 10px;
+}
+
+//margin
+.mt-10 {
+	margin-top: 10px;
+}
+
+.mb-10 {
+	margin-bottom: 10px;
+}
+
+.ml-10 {
+	margin-left: 10px;
+}
+
+.mr-10 {
+	margin-right: 10px;
+}
+
+//页码
+.demonstration {
+	margin-left: -50px;
+	margin-top: 3.5px;
+}
