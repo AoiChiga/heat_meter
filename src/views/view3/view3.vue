@@ -2,8 +2,44 @@
 	<div class="view3 h-100">
 		<div class="el-card__body">
 			<div class="view3-head mb-1">
-				<el-card class="zy-card ova">
-					<div class="d-flex mt-1 mb-1 ml-1">
+				<i-card class="zy-card ova">
+					<div class="d-flex">
+						<i-select
+							clearable
+							class="mr-1"
+							placeholder="站点名称"
+							v-model="tableModel.yhname"
+							style="width:120px"
+							@on-change="yhnameChange"
+						>
+							<i-option
+								v-for="item in yhnameList"
+								:value="item.value"
+								:key="item.value"
+							>
+								{{ item.label }}
+							</i-option>
+						</i-select>
+						<zy-date-picker
+							size="small"
+							datePickerType="datetimerange"
+							format="yyyy-MM-dd HH:mm:ss"
+							v-model="tableModel.times"
+							class="mr-1"
+							width="330px"
+							datep="选择日期"
+							@change="timesChange"
+						></zy-date-picker>
+						<zy-btn
+							:btnIcon="searchIcon"
+							btnTitle="搜索"
+							@click="btnClick"
+						></zy-btn>
+						<zy-btn
+							btnTitle="导出"
+							@click="exportClick"
+							:btnIcon="exportIcon"
+						></zy-btn>
 						<!-- <i-select
 							class="mr-1"
 							placeholder="系统类型"
@@ -18,30 +54,64 @@
 							>
 								{{ item.label }}
 							</i-option>
+						</i-select>
+						<i-select
+							class="mr-1"
+							placeholder="站名"
+							v-model="tableModel.hrz"
+							style="width:172px"
+							@on-change="yhnameChange"
+						>
+							<i-option
+								v-for="item in yhnameList"
+								:value="item.value"
+								:key="item.value"
+							>
+								{{ item.label }}
+							</i-option>
 						</i-select> -->
-						<zy-btn
-							:btnIcon="searchIcon"
-							btnTitle="搜索"
-							@click="btnClick"
-						></zy-btn>
-						<zy-btn
-							btnTitle="导出"
-							@click="exportClick"
-							:btnIcon="exportIcon"
-						></zy-btn>
 					</div>
-				</el-card>
+				</i-card>
 			</div>
 			<div class="view3-content">
-				<el-card class="zy-card mb-1">
-					<i-table :columns="tbHead" :data="tbBody"> </i-table>
-					<!-- <zy-page
+				<i-card class="zy-card mb-1">
+					<i-table
+						ref="zyTable"
+						class="w-100 zy-table"
+						show-header
+						:columns="tbHead"
+						:data="tbBody"
+						maxHeight="600"
+						:loading="loading"
+						stripe
+					>
+						<template slot-scope="{ row }" slot="mj">
+							<i
+								class="iconfont icon-menjin_kaimen text-red font-22"
+								v-if="row.mj == '1'"
+							></i>
+							<i
+								class="iconfont icon-menjin_guanmen text-green font-22"
+								v-else
+							></i>
+						</template>
+						<template slot-scope="{ row }" slot="gd">
+							<i
+								class="iconfont icon-wUPSgongdianzhuangzhi text-red font-22"
+								v-if="row.gd == '1'"
+							></i>
+							<i
+								class="iconfont icon-zuoce-gongdian text-green font-22"
+								v-else
+							></i>
+						</template> </i-table
+					><zy-page
 						:pageModel="pageModel"
-						:total="500"
+						:total="total"
 						@size-change="handleSizeChange"
 						@current-change="handleCurrentChange"
-					></zy-page> -->
-				</el-card>
+					></zy-page>
+				</i-card>
 			</div>
 		</div>
 	</div>
@@ -50,65 +120,128 @@
 import zySubfield from "../../mixins/zy-subfield"
 import zyBtn from "../../mixins/buttons/zy-btn"
 import excel from "../../mixins/excel"
-// import zyPage from "../../mixins/page"
+import zyDatePicker from "../../mixins/buttons/zy-date-picker"
+import zyPage from "../../mixins/page"
 export default {
 	name: "view3",
-	mixins: [zyBtn, excel,  zySubfield],
-	components: {},
+	mixins: [zyBtn, excel, zySubfield, zyDatePicker, zyPage],
 	data() {
 		return {
 			tbHead: [
 				{
-					key: "",
-					title: "用户名",
-					minWidth: 80,
-					overflow: true
-				},
-				{
-					key: "",
-					title: "流量月止数",
-					minWidth: 120,
-					overflow: true
-				},
-				{
-					key: "",
-					title: "流量月始数",
+					key: "yhname",
+					title: "站名",
 					minWidth: 110,
-					overflow: true
+					tooltip: true
 				},
 				{
-					key: "",
-					title: "流量月表走数(t)",
-					minWidth: 130,
-					overflow: true
+					key: "adress",
+					title: "站点编号",
+					width: 100,
+					tooltip: true
 				},
 				{
-					key: "",
-					title: "热量月止数",
+					key: "cjsj",
+					title: "采集时间",
 					minWidth: 110,
-					overflow: true
+					tooltip: true
 				},
 				{
-					key: "",
-					title: "热量月始数",
-					minWidth: 110,
-					overflow: true
+					slot: "mj",
+					title: "门禁",
+					width: 65,
+					tooltip: true
 				},
 				{
-					key: "",
-					title: "月表走数(gj)",
-					minWidth: 110,
-					overflow: true
+					slot: "gd",
+					title: "供电",
+					width: 65,
+					tooltip: true
 				},
 				{
-					key: "",
-					title: "卡余(t)",
+					key: "syll",
+					title: "剩余流量",
+					width: 95,
+					tooltip: true
+				},
+				{
+					key: "sdfw",
+					title: "设定阀位",
+					width: 90,
+					tooltip: true
+				},
+				{
+					key: "ssll",
+					title: "瞬时流量",
+					width: 95,
+					tooltip: true
+				},
+				{
+					key: "ssrl",
+					title: "瞬时热量",
+					width: 95,
+					tooltip: true
+				},
+				{
+					key: "ljll",
+					title: "累计流量",
+					width: 95,
+					tooltip: true
+				},
+				{
+					key: "ljrl",
+					title: "累计热量",
+					width: 95,
+					tooltip: true
+				},
+				{
+					key: "wd",
+					title: "温度",
+					width: 90,
+					tooltip: true
+				},
+				{
+					key: "yl",
+					title: "压力",
+					width: 80,
+					tooltip: true
+				},
+				{
+					key: "md",
+					title: "密度",
+					width: 80,
+					tooltip: true
+				},
+				{
+					key: "pl",
+					title: "频率",
+					width: 80,
+					tooltip: true
+				},
+				{
+					key: "yc",
+					title: "压差",
+					width: 80,
+					tooltip: true
+				},
+				{
+					key: "czds",
+					title: "充值吨数",
+					width: 90,
+					tooltip: true
+				},
+				{
+					key: "czsj",
+					title: "充值时间",
 					minWidth: 110,
-					overflow: true
+					tooltip: true
 				}
 			],
 			tbBody: [],
-			loading: true
+			loading: true,
+			tableModel: {},
+			yhnameList: [],
+			adressList: []
 		}
 	},
 	methods: {
@@ -117,25 +250,106 @@ export default {
 				showSpinner: false
 			})
 			this.$progress.start()
-
-			// const model = {
-			// 	...this.tableModel,
-			// 	...this.pageModel
-			// }
-
-			// this.tbBody = res.data.list
+			this.loading = true
+			const model = {
+				...this.pageModel,
+				...this.tableModel
+			}
+			const res = await this.$api.table.selectInfo(model)
+			// res.data.forEach((item) => {
+			// 	if (
+			// 		item.yhname.indexOf("合计") != -1 ||
+			// 		item.yhname.indexOf("损失量") != -1 ||
+			// 		item.yhname.indexOf("比例") != -1
+			// 	) {
+			// 		item.cellClassName = {
+			// 			yhname: "font-12"
+			// 		}
+			// 	}
+			// })
+			this.tbBody = res.data
+			this.total = res.count
 			this.loading = false
-			// this.total = res.data.total
 			this.$progress.done()
 		},
 		async exportClick() {
+			this.$progress.configure({
+				showSpinner: false
+			})
+			this.$progress.start()
+			const model = {
+				...this.tableModel,
+				...{ pageNum: 1, pageSize: this.total }
+			}
+			const res = await this.$api.table.selectInfo(model)
 			const tbHead = this.tbHead
-			const tbBody = this.tbBody
-			this.handleExcelClick(tbHead, tbBody, "历史数据")
+			const tbBody = res.data
+			this.handleExcelClick(
+				["金山热力公司实时数据"],
+				[
+					`日期：${this.$moment().format("yyyy-MM-DD")} 制表人：${
+						this.$store.state.user.username
+					}`
+				],
+				tbHead,
+				tbBody,
+				"实时数据"
+			)
+			this.$progress.done()
+		},
+		timesChange(val) {
+			if (val) {
+				this.tableModel.startTime = val[0]
+				this.tableModel.endTime = val[1]
+			} else {
+				this.tableModel.startTime = null
+				this.tableModel.endTime = null
+			}
+		},
+		rowClassName(row) {
+			if (row.yhname.indexOf("合计") != -1) {
+				return "total-success-row UnidreamLED font-18"
+			} else if (row.yhname.indexOf("损失量") != -1) {
+				return "loss-success-row UnidreamLED font-18"
+			} else if (row.yhname.indexOf("比例") != -1) {
+				return "proportion-success-row UnidreamLED font-18"
+			}
+			return ""
+		},
+		btnClick() {
+			this.pageModel.pageNum = 1
+			this.getTable()
+		},
+		yhnameChange(val) {
+			this.tableModel.yhname = val
+		},
+		adressChange(val) {
+			this.tableModel.adress = val
+		},
+		async getList() {
+			// let arr1 = []
+			// const res1 = await this.$api.info.selectAdress()
+			// res1.data.forEach((item) => {
+			// 	arr1.push({
+			// 		label: item.adress,
+			// 		value: item.adress
+			// 	})
+			// })
+			// this.adressList = arr1
+			let arr2 = []
+			const res2 = await this.$api.info.selectYhName()
+			res2.data.forEach((item) => {
+				arr2.push({
+					label: item.yhname,
+					value: item.yhname
+				})
+			})
+			this.yhnameList = arr2
 		}
 	},
 	created() {
-		// this.getTable()
+		this.getTable()
+		this.getList()
 	}
 }
 </script>

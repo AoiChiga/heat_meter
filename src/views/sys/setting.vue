@@ -3,8 +3,23 @@
 		<div class="el-card__body">
 			<el-row class="mb-1">
 				<el-col>
-					<div class="d-flex mb-1"></div>
 					<div class="d-flex mb-1">
+						<i-select
+							clearable
+							class="mr-1"
+							placeholder="站点名称"
+							v-model="selectValveModel.yhname"
+							style="width:120px"
+							@on-change="yhnameChange"
+						>
+							<i-option
+								v-for="item in yhnameList"
+								:value="item.value"
+								:key="item.value"
+							>
+								{{ item.label }}
+							</i-option>
+						</i-select>
 						<zy-btn
 							ghost
 							btnTitle="遥测"
@@ -33,7 +48,7 @@
 					</div>
 				</el-col>
 			</el-row>
-			<el-divider></el-divider>
+			<i-divider></i-divider>
 			<el-row :gutter="10" class="mt-1">
 				<el-col
 					:span="12"
@@ -54,23 +69,12 @@
 					</i-card>
 				</el-col>
 			</el-row>
-			<!-- <i-modal
-				v-model="dialogVisible"
-				:title="modalTitle"
-				draggable
-				sticky
-				class-name="vertical-center-modal"
-			>
-				
-				<div slot="footer">
-					<zy-btn btnTitle="确认" @click="confirmClick"></zy-btn>
-				</div>
-			</i-modal> -->
 		</div>
 	</div>
 </template>
 <script>
 import zyBtn from "../../mixins/buttons/zy-btn"
+
 export default {
 	mixins: [zyBtn],
 	components: {},
@@ -79,8 +83,7 @@ export default {
 			setValveOption: [],
 			setValve: undefined,
 			selectValveModel: {
-				id: undefined,
-				valve: "5"
+				valve: "0"
 			},
 			tbHead: [
 				{
@@ -91,17 +94,20 @@ export default {
 				},
 				{
 					title: "昨日用量",
-					key: "",
+					key: "Last",
+					minWidth: 100,
 					tooltip: true
 				},
 				{
 					title: "今日用量",
-					key: "",
+					key: "today",
+					minWidth: 100,
 					tooltip: true
 				},
 				{
 					title: "本月累计",
-					key: "",
+					key: "Yue",
+					minWidth: 100,
 					tooltip: true
 				}
 			],
@@ -114,7 +120,8 @@ export default {
 					title: "电厂北",
 					tbBody: []
 				}
-			]
+			],
+			yhnameList: []
 		}
 	},
 	methods: {
@@ -123,48 +130,88 @@ export default {
 				showSpinner: false
 			})
 			this.$progress.start()
-			const res = await this.$api.lkTable.selectZhanDian(this.pageModel1)
-			console.log(res)
-			// this.tbBody = res.data
-			// this.total1 = res.count
-			// this.loading1 = false
-			// const r = await this.$api.lkTable.selectJzq(this.pageModel2)
-			// this.jzqBody = r.data
-			// this.total2 = r.count
-			// this.loading2 = false
+			const res = await this.$api.table.selectNanBei()
+			this.cardList[0].tbBody = res.nan
+			this.cardList[1].tbBody = res.bei
 			this.$progress.done()
 		},
 		confirmClick() {
-			this.$confirm("确定进行此操作吗？", "提示", {
-				confirmButtonText: "确定",
-				cancelButtonText: "取消",
-				type: "warning"
-			})
-				.then(async () => {
-					let res = await this.$api.lkForm.updateDd(
-						this.selectValveModel
-					)
-					if (res.code == 200) {
-						this.$msg.success({
-							content: res.msg,
+			if (!this.selectValveModel.yhname) {
+				this.$msg.warning({
+					content: "请选择一个站点",
+					duration: 2
+				})
+			} else {
+				console.log(this.selectValveModel)
+
+				this.$confirm("确定进行此操作吗？", "提示", {
+					confirmButtonText: "确定",
+					cancelButtonText: "取消",
+					type: "warning"
+				})
+					.then(async () => {
+						// let res = await this.$api.lkForm.updateDd(
+						// 	this.selectValveModel
+						// )
+						// if (res.code == 200) {
+						// 	this.$msg.success({
+						// 		content: res.msg,
+						// 		duration: 1
+						// 	})
+						// 	this.getTable()
+						// }
+					})
+					.catch(() => {
+						this.closed = false
+						this.$msg.info({
+							content: "取消操作",
 							duration: 1
 						})
-						this.getTable()
-					}
-				})
-				.catch(() => {
-					this.closed = false
-					this.$msg.info({
-						content: "取消操作",
-						duration: 1
 					})
-				})
+			}
 		},
-		btnClick() {
-			this.getTable()
+		async btnClick() {
+			if (!this.selectValveModel.yhname) {
+				this.$msg.warning({
+					content: "请选择一个站点",
+					duration: 2
+				})
+			} else {
+				this.$progress.configure({
+					showSpinner: false
+				})
+				this.$progress.start()
+				const res = await this.$api.info.sentZl(this.selectValveModel)
+				console.log(res)
+				this.$progress.done()
+			}
+			// this.getTable()
 		},
 		selectValveChange(val) {
 			this.selectValveModel.valve = val
+		},
+		async getList() {
+			let arr1 = []
+			const res1 = await this.$api.info.selectYhName()
+			res1.data.forEach((item) => {
+				arr1.push({
+					label: item.yhname,
+					value: item.yhname
+				})
+			})
+			this.yhnameList = arr1
+			// let arr2 = []
+			// const res2 = await this.$api.info.selectYhName()
+			// res2.data.forEach((item) => {
+			// 	arr2.push({
+			// 		label: item.yhname,
+			// 		value: item.yhname
+			// 	})
+			// })
+			// this.yhnameList = arr2
+		},
+		yhnameChange(val) {
+			this.selectValveModel.yhname = val
 		}
 	},
 	created() {
@@ -174,8 +221,9 @@ export default {
 				label: `${i * 5}%`
 			})
 		}
+		this.getList()
 		// this.selectCorn()
-		// this.getTable()
+		this.getTable()
 	}
 }
 </script>

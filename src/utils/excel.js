@@ -1,10 +1,15 @@
 function excel({
+	title,
+	subTitle,
 	tbHead,
 	tbBody,
 	filename,
 	autoWidth = true,
 	bookType = "xlsx",
-	merges = [],
+	merges = [
+		{ s: { r: 0, c: 0 }, e: { r: 0, c: tbHead.length - 1 } },
+		{ s: { r: 1, c: 0 }, e: { r: 1, c: tbHead.length - 1 } }
+	],
 	multiHeader = []
 } = {}) {
 	import("../assets/js/Export2Excel.js").then((excel) => {
@@ -21,8 +26,8 @@ function excel({
 
 		// 筛选头部+prop
 		tbHead.forEach((item) => {
-			header.push(item.label)
-			filterVal.push(item.prop)
+			header.push(item.title)
+			filterVal.push(item.key)
 		})
 
 		// 内容
@@ -30,6 +35,8 @@ function excel({
 
 		// 导出
 		excel.export_json_to_excel({
+			title,
+			subTitle,
 			header,
 			data,
 			filename: filename || "表格",

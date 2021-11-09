@@ -1,5 +1,5 @@
 import axios from "axios"
-import { Message } from "element-ui"
+import { Message } from "iview"
 import store from "../store"
 import { getToken } from "../utils/cookies"
 import conf from "../config"
@@ -31,13 +31,11 @@ http.interceptors.response.use(
 	(response) => {
 		const res = response.data
 
-		if (res.code !== 200 && res.code !== "0000") {
-			Message({
-				message: res.msg || "Error",
-				type: "error",
-				duration: 1000
+		if (res.code !== 200) {
+			Message.error({
+				content: res.msg || "Error",
+				duration: 1
 			})
-
 			return Promise.reject(new Error(res.msg || "Error"))
 		} else {
 			return res
@@ -45,10 +43,10 @@ http.interceptors.response.use(
 	},
 	(error) => {
 		console.log("err" + error)
-		Message({
-			message: error.message,
-			type: "error",
-			duration: 1000
+
+		Message.error({
+			content: error.message,
+			duration: 1
 		})
 		return Promise.reject(error)
 	}

@@ -4,6 +4,16 @@
 			<div class="view2-head mb-1">
 				<el-card class="zy-card ova">
 					<div class="d-flex mt-1 mb-1 ml-1">
+						<zy-date-picker
+							size="small"
+							datePickerType="date"
+							format="yyyy-MM-dd"
+							v-model="tableModel.times"
+							class="mr-1"
+							width="140px"
+							datep="选择日期"
+							@change="timesChange"
+						></zy-date-picker>
 						<zy-btn
 							:btnIcon="searchIcon"
 							btnTitle="搜索"
@@ -57,16 +67,13 @@
 					<i-table
 						ref="zyTable"
 						class="w-100 zy-table"
-						header-row-class-name="zy-table-header"
+						show-header
 						:columns="tbHead"
 						:data="tbBody"
-						:height="height"
-						:header-cell-style="{
-							padding: '7px 0',
-							fontSize: '14px'
-						}"
-						:cell-style="{ padding: '4px 0' }"
-						border
+						maxHeight="600"
+						:loading="loading"
+						:row-class-name="rowClassName"
+						stripe
 					>
 					</i-table>
 				</el-card>
@@ -78,77 +85,80 @@
 import zySubfield from "../../mixins/zy-subfield"
 import zyBtn from "../../mixins/buttons/zy-btn"
 import excel from "../../mixins/excel"
-// import zyPage from "../../mixins/page"
+import zyDatePicker from "../../mixins/buttons/zy-date-picker"
 export default {
 	name: "view2",
-	mixins: [zyBtn, excel, zySubfield],
+	mixins: [zyBtn, excel, zySubfield, zyDatePicker],
 	components: {},
 	data() {
 		return {
 			tbHead: [
 				{
-					key: "",
+					key: "yhname",
 					title: "站名",
 					minWidth: 80,
 					tooltip: true
 				},
 				{
-					key: "",
-					title: "今日流量差（t）",
+					key: "todayNum",
+					title: "今日流量（t）",
 					minWidth: 130,
 					tooltip: true
 				},
 				{
-					key: "",
-					title: "昨日流量差（t）",
+					key: "lastNum",
+					title: "昨日流量（t）",
 					minWidth: 130,
 					tooltip: true
 				},
 				{
-					key: "",
+					key: "czNum",
 					title: "日差值",
 					minWidth: 110,
 					tooltip: true
 				},
 				{
-					key: "",
+					key: "yczNum",
 					title: "月差值",
 					minWidth: 110,
 					tooltip: true
 				},
 				{
-					key: "",
+					key: "rlDayNum",
 					title: "今日热量（GJ）",
 					minWidth: 130,
 					tooltip: true
 				},
 				{
-					key: "",
+					key: "rlLastNum",
 					title: "昨日热量（GJ）",
 					minWidth: 130,
 					tooltip: true
 				},
 				{
-					key: "",
-					title: "热量差值（GJ）",
-					minWidth: 130,
-					tooltip: true
-				},
-				{
-					key: "",
-					title: "月热量差值（GJ）",
+					key: "brlNum",
+					title: "热量日差值（GJ）",
 					minWidth: 140,
 					tooltip: true
 				},
 				{
-					key: "",
+					key: "czrlYueNum",
+					title: "热量月差值（GJ）",
+					minWidth: 140,
+					tooltip: true
+				},
+				{
+					key: "syl",
 					title: "卡余（t）",
 					minWidth: 110,
 					tooltip: true
 				}
 			],
 			tbBody: [],
-			loading: true
+			loading: true,
+			tableModel: {
+				times: undefined
+			}
 		}
 	},
 	methods: {
@@ -157,6 +167,19 @@ export default {
 				showSpinner: false
 			})
 			this.$progress.start()
+			const res = await this.$api.table.selectDay(this.tableModel)
+			res.data.forEach((item) => {
+				if (
+					item.yhname.indexOf("合计") != -1 ||
+					item.yhname.indexOf("损失量") != -1 ||
+					item.yhname.indexOf("比例") != -1
+				) {
+					item.cellClassName = {
+						yhname: "font-12"
+					}
+				}
+			})
+			this.tbBody = res.data
 
 			this.loading = false
 			this.$progress.done()
@@ -164,9 +187,26 @@ export default {
 		async exportClick() {
 			const tbHead = this.tbHead
 			const tbBody = this.tbBody
-			this.handleExcelClick(tbHead, tbBody, "历史数据")
+			this.handleExcelClick(tbHead, tbBody, "日报表")
+		},
+		timesChange(val) {
+			this.tableModel.times = val
+		},
+		rowClassName(row) {
+			if (row.yhname.indexOf("合计") != -1) {
+				return "total-success-row UnidreamLED font-18"
+			} else if (row.yhname.indexOf("损失量") != -1) {
+				return "loss-success-row UnidreamLED font-18"
+			} else if (row.yhname.indexOf("比例") != -1) {
+				return "proportion-success-row UnidreamLED font-18"
+			}
+			return ""
 		}
 	},
-	created() {}
+	created() {
+		const times = this.$moment().format("yyyy-MM-DD")
+		this.tableModel.times = times
+		this.getTable()
+	}
 }
 </script>

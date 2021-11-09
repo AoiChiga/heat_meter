@@ -82,7 +82,7 @@
 			<!-- 视图 -->
 			<div class="home-view p-1 box-border h-100">
 				<!-- 主要试图 -->
-				<el-card class="view h-100 zy-card"> <router-view /></el-card>
+				<i-card class="view h-100 zy-card"> <router-view /></i-card>
 				<!-- <div
 					class="view h-100
 					el-card

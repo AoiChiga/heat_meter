@@ -9,7 +9,7 @@ export default {
 			pageModel: {
 				query: "",
 				pageNum: 1,
-				pageSize: 200
+				pageSize: 50
 			},
 			total: 0
 		}

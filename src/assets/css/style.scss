@@ -84,7 +84,6 @@
 .el-picker-panel__icon-btn:hover {
 	color: $primary !important;
 }
-
 .ivu-btn-ghost.ivu-btn-primary {
 	color: $primary !important;
 	border-color: $primary !important;
@@ -94,12 +93,39 @@
 	background-color: $primary !important;
 	border-color: $primary !important;
 }
-.ivu-table-header{
-    color: $primary;
+.ivu-table-header {
+	color: $primary !important;
+}
+
+.total-success-row td {
+	color: $green;
+	background-color: #f0f9eb !important;
+}
+.loss-success-row td {
+	color: $red;
+	background-color: #fddddd !important;
+}
+.proportion-success-row td {
+	color: $orange;
+	background-color: #f5e4db !important;
+}
+.table-row {
+	color: #515a6e !important;
 }
 
 .vxe-input:not(.is--disabled).is--active .vxe-input--inner {
 	border: 1px solid $primary !important;
+}
+.ivu-table-wrapper {
+	border: none !important;
+}
+.ivu-table {
+	color: $primary !important;
+	font-size: 13px !important;
+}
+.ivu-table td,
+.ivu-table th {
+	border-bottom: none !important;
 }
 
 .vertical-center-modal {
@@ -819,6 +845,7 @@ index
 			text-align: right;
 			transition: all 1s;
 			.login-form {
+				margin-top: 70px;
 				position: relative;
 				.form-input {
 					width: 50%;

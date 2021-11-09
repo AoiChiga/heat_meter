@@ -1,6 +1,6 @@
 const index = {
-	name: "主页",
-	icon: "icon-zhuye",
+	name: "日报表",
+	icon: "icon-ribaobiao",
 	type: "index",
 	path: "index"
 }
@@ -10,12 +10,12 @@ const view1 = {
 	type: "view1",
 	path: "view1/view1"
 }
-const view2 = {
-	name: "日报表",
-	icon: "icon-ribaobiao",
-	type: "view2",
-	path: "view2/view2"
-}
+// const view2 = {
+// 	name: "日报表",
+// 	icon: "icon-ribaobiao",
+// 	type: "view2",
+// 	path: "view2/view2"
+// }
 const view3 = {
 	name: "实时数据",
 	icon: "icon-shishishuju",
@@ -35,7 +35,7 @@ const sys = {
 	path: "sys/setting"
 }
 
-const navbar = [index, view2,view1, view3, view4,sys]
+const navbar = [index, view1, view3, view4, sys]
 
 const token = {
 	//缓存中token-name
@@ -46,14 +46,14 @@ const token = {
 }
 
 const http = {
-	baseURL: "http://192.168.0.101:8085/jsrl",
-	// baseURL: "http://81.70.59.8:8082/nb",
+	// baseURL: "http://192.168.1.26:8085/jsrl",
+	baseURL: "http://121.36.204.245:8082/jsrl",
 	voucher: false,
 	timeout: 50000
 }
 
 const company = {
-	name: "ZYIS-H ",
+	name: "ZYIS 工业用户热表集抄",
 	copyright: "河南众源系统工程有限公司",
 	address: "河南省郑州市高新区国槐街8号火炬大厦A座1602",
 	tele: "0371-67896222"

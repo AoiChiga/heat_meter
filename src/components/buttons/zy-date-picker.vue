@@ -2,7 +2,7 @@
 	<!-- 起止日期 -->
 	<div class="zy-date-picker d-flex ai-center">
 		<el-date-picker
-			size=""
+			:size="size"
 			class="mr-1"
 			v-model="datePickerModel"
 			:type="datePickerType"
@@ -32,6 +32,10 @@
 export default {
 	name: "zy-date-picker",
 	props: {
+		size: {
+			type: String,
+			default: ""
+		},
 		// 时间选择类型
 		datePickerType: {
 			type: String,

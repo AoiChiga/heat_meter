@@ -2,8 +2,18 @@
 	<div class="view1 h-100">
 		<div class="el-card__body">
 			<div class="view1-head mb-1">
-				<el-card class="zy-card ova">
-					<div class="d-flex mt-1 mb-1 ml-1">
+				<i-card class="zy-card ova">
+					<div class="d-flex">
+						<zy-date-picker
+							size="small"
+							datePickerType="date"
+							format="yyyy-MM-dd"
+							v-model="tableModel.times"
+							class="mr-1"
+							width="140px"
+							datep="选择日期"
+							@change="timesChange"
+						></zy-date-picker>
 						<zy-btn
 							:btnIcon="searchIcon"
 							btnTitle="搜索"
@@ -50,26 +60,23 @@
 							@click="btnClick"
 						></zy-btn> -->
 					</div>
-				</el-card>
+				</i-card>
 			</div>
 			<div class="view1-content">
-				<el-card class="zy-card mb-1">
+				<i-card class="zy-card mb-1 ova">
 					<i-table
 						ref="zyTable"
 						class="w-100 zy-table"
-						header-row-class-name="zy-table-header"
+						show-header
 						:columns="tbHead"
 						:data="tbBody"
-						:height="height"
-						:header-cell-style="{
-							padding: '7px 0',
-							fontSize: '14px'
-						}"
-						:cell-style="{ padding: '4px 0' }"
-						border
+						maxHeight="550"
+						:loading="loading"
+						:row-class-name="rowClassName"
+						stripe
 					>
 					</i-table>
-				</el-card>
+				</i-card>
 			</div>
 		</div>
 	</div>
@@ -78,65 +85,69 @@
 import zySubfield from "../../mixins/zy-subfield"
 import zyBtn from "../../mixins/buttons/zy-btn"
 import excel from "../../mixins/excel"
+import zyDatePicker from "../../mixins/buttons/zy-date-picker"
 // import zyPage from "../../mixins/page"
 export default {
 	name: "view1",
-	mixins: [zyBtn, excel, zySubfield],
+	mixins: [zyBtn, excel, zySubfield, zyDatePicker],
 	components: {},
 	data() {
 		return {
 			tbHead: [
 				{
-					key: "",
+					key: "yhname",
 					title: "站名",
 					minWidth: 80,
 					tooltip: true
 				},
 				{
-					key: "",
+					key: "LlBenYue",
 					title: "本月流量差（t）",
-					minWidth: 130,
+					minWidth: 135,
 					tooltip: true
 				},
 				{
-					key: "",
+					key: "LlShangYue",
 					title: "上月流量差（t）",
-					minWidth: 130,
+					minWidth: 135,
 					tooltip: true
 				},
 				{
-					key: "",
-					title: "月走数",
+					key: "llCzNum",
+					title: "月走数（t）",
 					minWidth: 110,
 					tooltip: true
 				},
 				{
-					key: "",
+					key: "rlBenYue",
 					title: "本月热量（GJ）",
-					minWidth: 130,
+					minWidth: 135,
 					tooltip: true
 				},
 				{
-					key: "",
+					key: "rlShangYue",
 					title: "上月热量（GJ）",
-					minWidth: 130,
+					minWidth: 135,
 					tooltip: true
 				},
 				{
-					key: "",
+					key: "rlCzNum",
 					title: "热量差值（GJ）",
-					minWidth: 130,
+					minWidth: 135,
 					tooltip: true
 				},
 				{
-					key: "",
+					key: "syl",
 					title: "卡余（t）",
 					minWidth: 110,
 					tooltip: true
 				}
 			],
 			tbBody: [],
-			loading: true
+			loading: true,
+			tableModel: {
+				times: undefined
+			}
 		}
 	},
 	methods: {
@@ -145,16 +156,61 @@ export default {
 				showSpinner: false
 			})
 			this.$progress.start()
-
+			const res = await this.$api.table.selectYue(this.tableModel)
+			res.data.forEach((item) => {
+				if (
+					item.yhname.indexOf("合计") != -1 ||
+					item.yhname.indexOf("损失量") != -1 ||
+					item.yhname.indexOf("比例") != -1
+				) {
+					item.cellClassName = {
+						yhname: "font-12"
+					}
+				}
+			})
+			this.tbBody = res.data
 			this.loading = false
 			this.$progress.done()
 		},
 		async exportClick() {
+			this.$progress.configure({
+				showSpinner: false
+			})
+			this.$progress.start()
+			const res = await this.$api.table.selectYue(this.tableModel)
 			const tbHead = this.tbHead
-			const tbBody = this.tbBody
-			this.handleExcelClick(tbHead, tbBody, "历史数据")
+			const tbBody = res.data
+			this.handleExcelClick(
+				["金山热力公司月报表"],
+				[
+					`日期：${this.$moment().format("yyyy-MM-DD")} 制表人：${
+						this.$store.state.user.username
+					}`
+				],
+				tbHead,
+				tbBody,
+				"月报表"
+			)
+			this.$progress.done()
+		},
+		timesChange(val) {
+			this.tableModel.times = val
+		},
+		rowClassName(row) {
+			if (row.yhname.indexOf("合计") != -1) {
+				return "total-success-row UnidreamLED font-18"
+			} else if (row.yhname.indexOf("损失量") != -1) {
+				return "loss-success-row UnidreamLED font-18"
+			} else if (row.yhname.indexOf("比例") != -1) {
+				return "proportion-success-row UnidreamLED font-18"
+			}
+			return ""
 		}
 	},
-	created() {}
+	created() {
+		const times = this.$moment().format("yyyy-MM-DD")
+		this.tableModel.times = times
+		this.getTable()
+	}
 }
 </script>

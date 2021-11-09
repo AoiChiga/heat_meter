@@ -52,7 +52,6 @@ export default {
 	},
 	methods: {
 		btnClick() {
-			this.pageModel.pageNum = 1
 			this.getTable()
 		}
 	}

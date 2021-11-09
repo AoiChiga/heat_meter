@@ -5,7 +5,7 @@
 			@on-page-size-change="handleSizeChange"
 			@on-change="handleCurrentChange"
 			:curren="pageModel.pageNum"
-			:page-size-opts="[5, 100, 200, 300, 500]"
+			:page-size-opts="[10, 20, 30, 40, 50]"
 			:page-size="pageModel.pageSize"
 			layout="total, sizes, prev, pager, next, jumper"
 			:total="total"

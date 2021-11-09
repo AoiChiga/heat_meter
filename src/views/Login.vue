@@ -39,7 +39,7 @@
 				<el-form
 					ref="logoModelRef"
 					:model="logoModel"
-					class="login-form mt-5 mr-2"
+					class="login-form ml-2"
 				>
 					<el-form-item class="" prop="username">
 						<i

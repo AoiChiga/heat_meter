@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { saveAs } from "file-saver"
-import XLSX from "xlsx"
+import XLSX from "xlsx-style"
 
 function generateArray(table) {
 	var out = []
@@ -19,7 +19,7 @@ function generateArray(table) {
 				cellValue = +cellValue
 
 			//Skip ranges
-			ranges.forEach(function (range) {
+			ranges.forEach(function(range) {
 				if (
 					R >= range.s.r &&
 					R <= range.e.r &&
@@ -85,7 +85,9 @@ function sheet_from_array_of_arrays(data, opts) {
 			var cell = {
 				v: data[R][C]
 			}
-			if (cell.v == null) continue
+			if (!cell.v) {
+				cell.v = "--"
+			}
 			var cell_ref = XLSX.utils.encode_cell({
 				c: C,
 				r: R
@@ -134,7 +136,6 @@ export function export_table_to_excel(id) {
 	/* add ranges to worksheet */
 	// ws['!cols'] = ['apple', 'banan'];
 	ws["!merges"] = ranges
-
 	/* add worksheet to workbook */
 	wb.SheetNames.push(ws_name)
 	wb.Sheets[ws_name] = ws
@@ -154,11 +155,13 @@ export function export_table_to_excel(id) {
 }
 
 export function export_json_to_excel({
-	multiHeader = [],
+	title, //标题
+	subTitle,
+	multiHeader,
 	header,
 	data,
 	filename,
-	merges = [],
+	merges,
 	autoWidth = true,
 	bookType = "xlsx"
 } = {}) {
@@ -166,11 +169,12 @@ export function export_json_to_excel({
 	filename = filename || "excel-list"
 	data = [...data]
 	data.unshift(header)
-
 	for (let i = multiHeader.length - 1; i > -1; i--) {
 		data.unshift(multiHeader[i])
 	}
 
+	data.unshift(subTitle)
+	data.unshift(title)
 	var ws_name = "SheetJS"
 	var wb = new Workbook(),
 		ws = sheet_from_array_of_arrays(data)
@@ -178,7 +182,7 @@ export function export_json_to_excel({
 	if (merges.length > 0) {
 		if (!ws["!merges"]) ws["!merges"] = []
 		merges.forEach((item) => {
-			ws["!merges"].push(XLSX.utils.decode_range(item))
+			ws["!merges"].push(item)
 		})
 	}
 
@@ -204,8 +208,8 @@ export function export_json_to_excel({
 			})
 		)
 		/*以第一行为初始值*/
-		let result = colWidth[0]
-		for (let i = 1; i < colWidth.length; i++) {
+		let result = colWidth[2]
+		for (let i = 2; i < colWidth.length; i++) {
 			for (let j = 0; j < colWidth[i].length; j++) {
 				if (result[j]["wch"] < colWidth[i][j]["wch"]) {
 					result[j]["wch"] = colWidth[i][j]["wch"]
@@ -218,6 +222,75 @@ export function export_json_to_excel({
 	/* add worksheet to workbook */
 	wb.SheetNames.push(ws_name)
 	wb.Sheets[ws_name] = ws
+	var dataInfo = wb.Sheets[wb.SheetNames[0]]
+	// 设置单元格框线
+	const borderAll = {
+		top: {
+			style: "thin"
+		},
+		bottom: {
+			style: "thin"
+		},
+		left: {
+			style: "thin"
+		},
+		right: {
+			style: "thin"
+		}
+	}
+
+	// 给所有单元格加上边框，内容居中，字体，字号，标题表头特殊格式部分后面替换
+	for (var i in dataInfo) {
+		if (
+			i == "!ref" ||
+			i == "!merges" ||
+			i == "!cols" ||
+			i == "!rows" ||
+			i == "A2" ||
+			i == "A1"
+		) {
+			dataInfo["A1"].s = {
+				font: {
+					name: "微软雅黑",
+					sz: 12,
+					color: {
+						rgb: "000000"
+					},
+					bold: true,
+					italic: false,
+					underline: false
+				},
+				alignment: {
+					horizontal: "center",
+					vertical: "center"
+				}
+			}
+			dataInfo["A2"].s = {
+				font: {
+					name: "微软雅黑",
+					sz: 12,
+					italic: false,
+					underline: false
+				},
+				alignment: {
+					horizontal: "right",
+					vertical: "center"
+				}
+			}
+		} else {
+			dataInfo[i + ""].s = {
+				border: borderAll,
+				alignment: {
+					horizontal: "center",
+					vertical: "center"
+				},
+				font: {
+					name: "微软雅黑",
+					sz: 10
+				}
+			}
+		}
+	}
 
 	var wbout = XLSX.write(wb, {
 		bookType: bookType,

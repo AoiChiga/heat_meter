@@ -33,9 +33,27 @@ import config from "./config"
 Vue.prototype.$config = config
 
 //element
-import element from "element-ui"
+import {
+	ColorPicker,
+	Row,
+	Col,
+	Menu,
+	MenuItem,
+	Header,
+	DatePicker,
+	Form,
+	FormItem
+} from "element-ui"
 import "element-ui/lib/theme-chalk/index.css"
-Vue.use(element)
+Vue.component("el-color-picker", ColorPicker)
+Vue.component("el-row", Row)
+Vue.component("el-col", Col)
+Vue.component("el-menu", Menu)
+Vue.component("el-menu-item", MenuItem)
+Vue.component("el-header", Header)
+Vue.component("el-date-picker", DatePicker)
+Vue.component("el-form", Form)
+Vue.component("el-form-item", FormItem)
 
 //style
 import "./assets/css/style.scss"
@@ -72,8 +90,6 @@ import "nprogress/nprogress.css"
 //按需引入 iview
 import "iview/dist/styles/iview.css"
 import {
-	Modal,
-	Spin,
 	Input,
 	Button,
 	Page,
@@ -81,23 +97,19 @@ import {
 	Table,
 	Select,
 	Option,
-	Form,
-	FormItem,
 	Card,
-	Icon
+	Icon,
+	Divider
 } from "iview"
-Vue.component("i-modal", Modal)
-Vue.component("i-spin", Spin)
 Vue.component("i-input", Input)
 Vue.component("i-button", Button)
 Vue.component("i-page", Page)
 Vue.component("i-table", Table)
 Vue.component("i-select", Select)
 Vue.component("i-option", Option)
-Vue.component("i-form", Form)
-Vue.component("i-form-item", FormItem)
 Vue.component("i-card", Card)
 Vue.component("i-icon", Icon)
+Vue.component("i-divider", Divider)
 Vue.prototype.$msg = Message
 
 Vue.use(dataV)
