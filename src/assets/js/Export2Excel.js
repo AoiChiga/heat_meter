@@ -86,7 +86,7 @@ function sheet_from_array_of_arrays(data, opts) {
 				v: data[R][C]
 			}
 			if (!cell.v) {
-				cell.v = "--"
+				cell.v = "/"
 			}
 			var cell_ref = XLSX.utils.encode_cell({
 				c: C,

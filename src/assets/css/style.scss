@@ -3,7 +3,9 @@
 #nprogress .bar {
 	background: $primary !important; //自定义颜色
 }
-
+.ivu-card {
+	background: #f1f1f1 !important;
+}
 .amap-overlay-text-container {
 	background: transparent;
 	border: 1px dotted $primary;
@@ -94,7 +96,10 @@
 	border-color: $primary !important;
 }
 .ivu-table-header {
-	color: $primary !important;
+	color: $white !important;
+}
+.ivu-table th {
+	background-color: $primary !important;
 }
 
 .total-success-row td {
@@ -594,6 +599,12 @@
 .ova {
 	overflow: auto !important;
 }
+.ov-x {
+	overflow-x: auto !important;
+}
+.ov-y {
+	overflow-y: auto !important;
+}
 
 .view {
 	height: calc(100vh - 90px);
@@ -831,7 +842,7 @@ index
 		}
 		.zy-card {
 			border: 0;
-			background-image: url("../images/demo/bg.png");
+			background-image: url("../images/demo/bg.png") !important;
 			border-color: transparent;
 			background-repeat: no-repeat;
 			background-position: left;

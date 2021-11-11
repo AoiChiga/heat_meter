@@ -1,12 +1,12 @@
 const index = {
-	name: "日报表",
-	icon: "icon-ribaobiao",
+	name: "实时数据",
+	icon: "icon-shishishuju",
 	type: "index",
 	path: "index"
 }
 const view1 = {
-	name: "月报表",
-	icon: "icon-yuebaobiao",
+	name: "历史数据",
+	icon: "icon-lishishuju",
 	type: "view1",
 	path: "view1/view1"
 }
@@ -17,14 +17,14 @@ const view1 = {
 // 	path: "view2/view2"
 // }
 const view3 = {
-	name: "实时数据",
-	icon: "icon-shishishuju",
+	name: "日报表",
+	icon: "icon-ribaobiao",
 	type: "view3",
 	path: "view3/view3"
 }
 const view4 = {
-	name: "历史数据",
-	icon: "icon-lishishuju",
+	name: "月报表",
+	icon: "icon-yuebaobiao",
 	type: "view4",
 	path: "view4/view4"
 }

@@ -28,7 +28,7 @@
 						<i-select
 							class="mr-1"
 							placeholder="请选择"
-							v-model="selectValveModel.valve"
+							v-model="selectValveModel.kd"
 							style="width:80px"
 							@on-change="selectValveChange"
 						>
@@ -83,7 +83,7 @@ export default {
 			setValveOption: [],
 			setValve: undefined,
 			selectValveModel: {
-				valve: "0"
+				kd: "0"
 			},
 			tbHead: [
 				{
@@ -142,27 +142,23 @@ export default {
 					duration: 2
 				})
 			} else {
-				console.log(this.selectValveModel)
-
 				this.$confirm("确定进行此操作吗？", "提示", {
 					confirmButtonText: "确定",
 					cancelButtonText: "取消",
 					type: "warning"
 				})
 					.then(async () => {
-						// let res = await this.$api.lkForm.updateDd(
-						// 	this.selectValveModel
-						// )
-						// if (res.code == 200) {
-						// 	this.$msg.success({
-						// 		content: res.msg,
-						// 		duration: 1
-						// 	})
-						// 	this.getTable()
-						// }
+						const res = await this.$api.set.shezhiKd(
+							this.selectValveModel
+						)
+						if (res.code == 200) {
+							this.$msg.success({
+								content: res.msg,
+								duration: 1
+							})
+						}
 					})
 					.catch(() => {
-						this.closed = false
 						this.$msg.info({
 							content: "取消操作",
 							duration: 1
@@ -188,7 +184,7 @@ export default {
 			// this.getTable()
 		},
 		selectValveChange(val) {
-			this.selectValveModel.valve = val
+			this.selectValveModel.kd = val
 		},
 		async getList() {
 			let arr1 = []
@@ -222,7 +218,6 @@ export default {
 			})
 		}
 		this.getList()
-		// this.selectCorn()
 		this.getTable()
 	}
 }

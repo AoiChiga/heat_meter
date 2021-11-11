@@ -2,12 +2,12 @@
 	<div class="view2 h-100">
 		<div class="el-card__body">
 			<div class="view2-head mb-1">
-				<el-card class="zy-card ova">
+				<el-card class="zy-card  ">
 					<div class="d-flex mt-1 mb-1 ml-1">
 						<zy-date-picker
 							size="small"
 							datePickerType="date"
-							format="yyyy-MM-dd"
+							vf="yyyy-MM-dd"
 							v-model="tableModel.times"
 							class="mr-1"
 							width="140px"

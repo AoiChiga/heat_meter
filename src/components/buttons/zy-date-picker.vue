@@ -24,6 +24,7 @@
 			:class="className"
 			:prefix-icon="preicon"
 			:clear-icon="clricon"
+            :default-time="dt"
 		>
 		</el-date-picker>
 	</div>
@@ -92,7 +93,10 @@ export default {
 		},
 		name: {
 			type: String
-		}
+		},
+        dt:{
+            type:Array
+        }
 	},
 	data() {
 		return {
