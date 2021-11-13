@@ -69,7 +69,7 @@
 						show-header
 						:columns="tbHead"
 						:data="tbBody"
-						maxHeight="600"
+						maxHeight="700"
 						:loading="loading"
 						:row-class-name="rowClassName"
 						stripe
@@ -99,13 +99,13 @@ export default {
 					tooltip: true
 				},
 				{
-					key: "todayNum",
+					key: "lastNum",
 					title: "截止流量（t）",
 					minWidth: 135,
 					tooltip: true
 				},
 				{
-					key: "lastNum",
+					key: "todayNum",
 					title: "起始流量（t）",
 					minWidth: 135,
 					tooltip: true
@@ -123,13 +123,13 @@ export default {
 					tooltip: true
 				},
 				{
-					key: "rlDayNum",
+					key: "rlLastNum",
 					title: "截止热量（GJ）",
 					minWidth: 135,
 					tooltip: true
 				},
 				{
-					key: "rlLastNum",
+					key: "rlDayNum",
 					title: "起始热量（GJ）",
 					minWidth: 135,
 					tooltip: true

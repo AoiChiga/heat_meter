@@ -70,7 +70,7 @@
 						show-header
 						:columns="tbHead"
 						:data="tbBody"
-						maxHeight="550"
+						maxHeight="700"
 						:loading="loading"
 						:row-class-name="rowClassName"
 						stripe

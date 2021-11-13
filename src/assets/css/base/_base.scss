@@ -73,7 +73,7 @@ $color: (
 	"yellow": #ffc40d,
 	"pink": #c3325f,
 	"purple": #b6a2de,
-	"primary": var(--primary, #61b2ee)
+	"primary": $primary
 );
 
 // text

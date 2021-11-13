@@ -81,7 +81,7 @@
 						show-header
 						:columns="tbHead"
 						:data="tbBody"
-						height="600"
+						height="700"
 						:loading="loading"
 						stripe
 					>
@@ -144,7 +144,7 @@ export default {
 				{
 					key: "cjsj",
 					title: "采集时间",
-					minWidth: 125,
+					minWidth: 130,
 					tooltip: true
 				},
 				{

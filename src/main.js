@@ -34,7 +34,6 @@ Vue.prototype.$config = config
 
 //element
 import {
-	ColorPicker,
 	Row,
 	Col,
 	Menu,
@@ -46,7 +45,6 @@ import {
 	MessageBox
 } from "element-ui"
 import "element-ui/lib/theme-chalk/index.css"
-Vue.component("el-color-picker", ColorPicker)
 Vue.component("el-row", Row)
 Vue.component("el-col", Col)
 Vue.component("el-menu", Menu)
@@ -89,8 +87,14 @@ import NProgress from "nprogress"
 Vue.prototype.$progress = NProgress
 import "nprogress/nprogress.css"
 
+Vue.prototype.color = "#000"
+
 //按需引入 iview
-import "iview/dist/styles/iview.css"
+// import "iview/dist/styles/iview.css"
+import ViewUI from "view-design"
+import "./my-theme/index.less"
+
+Vue.use(ViewUI)
 import {
 	Input,
 	Button,

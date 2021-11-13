@@ -19,6 +19,10 @@ const jsTable = {
 	//设备管理 电厂南/北
 	selectNanBei() {
 		return http.post("info/selectNanBei", {})
+	},
+	//根据时间段查询累计流量
+	selectAllByTimes(model) {
+		return http.post("info/selectAllByTimes", model)
 	}
 }
 export default jsTable

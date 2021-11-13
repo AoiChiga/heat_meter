@@ -42,7 +42,7 @@
 					</el-menu-item>
 				</el-menu>
 				<div class="mr-5 home-close fw-600 mt-2 d-flex">
-					<div class="mr-2 d-flex">
+					<!-- <div class="mr-2 d-flex">
 						<span class="lh-22">主题色：</span>
 						<el-color-picker
 							size="small"
@@ -62,7 +62,7 @@
 							]"
 						>
 						</el-color-picker>
-					</div>
+					</div> -->
 					<div class="mr-2 text-primary lh-18">
 						<i class="iconfont icon-user"></i>
 						{{
@@ -80,16 +80,9 @@
 		<!-- 主要区域 -->
 		<div class="home-main flex-1 po-relative">
 			<!-- 视图 -->
-			<div class="home-view p-1 box-border h-100">
+			<div class="home-view box-border h-100">
 				<!-- 主要试图 -->
-				<i-card class="view h-100 zy-card"> <router-view /></i-card>
-				<!-- <div
-					class="view h-100
-					el-card
-					is-always-shadow
-					no-head
-					subfield-right"
-				> -->
+				<div class="view h-100"> <router-view /></div>
 			</div>
 		</div>
 	</div>
@@ -140,7 +133,7 @@ export default {
 		}
 	},
 	created() {
-		this.initThemeColor()
+		// this.initThemeColor()
 		this.loginInfo()
 	}
 }

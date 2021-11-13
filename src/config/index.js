@@ -10,12 +10,6 @@ const view1 = {
 	type: "view1",
 	path: "view1/view1"
 }
-// const view2 = {
-// 	name: "日报表",
-// 	icon: "icon-ribaobiao",
-// 	type: "view2",
-// 	path: "view2/view2"
-// }
 const view3 = {
 	name: "日报表",
 	icon: "icon-ribaobiao",
@@ -28,6 +22,12 @@ const view4 = {
 	type: "view4",
 	path: "view4/view4"
 }
+const view2 = {
+	name: "生产报表",
+	icon: "icon-baobiao",
+	type: "view2",
+	path: "view2/view2"
+}
 const sys = {
 	name: "设备管理",
 	icon: "icon-shebeiguanli",
@@ -35,7 +35,7 @@ const sys = {
 	path: "sys/setting"
 }
 
-const navbar = [index, view1, view3, view4, sys]
+const navbar = [index, view1, view3, view4, view2, sys]
 
 const token = {
 	//缓存中token-name
@@ -62,6 +62,8 @@ const company = {
 const map = {
 	ak: "HE5BlZinsvqCISbVv2ABE1DdDWPKgtGW"
 }
+
+
 
 export default {
 	navbar,

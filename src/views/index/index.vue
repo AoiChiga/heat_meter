@@ -81,7 +81,7 @@
 						show-header
 						:columns="tbHead"
 						:data="tbBody"
-						maxHeight="600"
+						maxHeight="700"
 						:loading="loading"
 						stripe
 					>
@@ -143,7 +143,7 @@ export default {
 				{
 					key: "cjsj",
 					title: "采集时间",
-					minWidth: 125,
+					minWidth: 130,
 					tooltip: true
 				},
 				{
@@ -356,6 +356,9 @@ export default {
 	created() {
 		this.getTable()
 		this.getList()
+		setInterval(() => {
+			this.getTable()
+		}, 120000)
 	}
 }
 </script>

@@ -2,15 +2,15 @@
 	<div class="view2 h-100">
 		<div class="el-card__body">
 			<div class="view2-head mb-1">
-				<el-card class="zy-card  ">
-					<div class="d-flex mt-1 mb-1 ml-1">
+				<i-card class="zy-card">
+					<div class="d-flex">
 						<zy-date-picker
 							size="small"
-							datePickerType="date"
-							vf="yyyy-MM-dd"
+							datePickerType="datetimerange"
+							vf="yyyy-MM-dd HH:mm:ss"
 							v-model="tableModel.times"
 							class="mr-1"
-							width="140px"
+							width="330px"
 							datep="选择日期"
 							@change="timesChange"
 						></zy-date-picker>
@@ -60,23 +60,23 @@
 							@click="btnClick"
 						></zy-btn> -->
 					</div>
-				</el-card>
+				</i-card>
 			</div>
 			<div class="view2-content">
-				<el-card class="zy-card mb-1">
+				<i-card class="zy-card mb-1">
 					<i-table
 						ref="zyTable"
 						class="w-100 zy-table"
 						show-header
 						:columns="tbHead"
 						:data="tbBody"
-						maxHeight="600"
+						maxHeight="700"
 						:loading="loading"
 						:row-class-name="rowClassName"
 						stripe
 					>
 					</i-table>
-				</el-card>
+				</i-card>
 			</div>
 		</div>
 	</div>
@@ -100,64 +100,54 @@ export default {
 					tooltip: true
 				},
 				{
-					key: "todayNum",
-					title: "今日流量（t）",
+					key: "bendLl",
+					title: "截止累计流量",
 					minWidth: 130,
 					tooltip: true
 				},
 				{
-					key: "lastNum",
-					title: "昨日流量（t）",
+					key: "bstartLl",
+					title: "起始累计流量",
 					minWidth: 130,
 					tooltip: true
 				},
 				{
-					key: "czNum",
-					title: "日差值",
+					key: "czLl",
+					title: "用流量",
 					minWidth: 110,
 					tooltip: true
 				},
 				{
-					key: "yczNum",
-					title: "月差值",
+					key: "bendRl",
+					title: "截止累计热量",
+					minWidth: 130,
+					tooltip: true
+				},
+				{
+					key: "bstartRl",
+					title: "起始累计热量",
 					minWidth: 110,
 					tooltip: true
 				},
 				{
-					key: "rlDayNum",
-					title: "今日热量（GJ）",
-					minWidth: 130,
-					tooltip: true
-				},
-				{
-					key: "rlLastNum",
-					title: "昨日热量（GJ）",
-					minWidth: 130,
-					tooltip: true
-				},
-				{
-					key: "brlNum",
-					title: "热量日差值（GJ）",
-					minWidth: 140,
-					tooltip: true
-				},
-				{
-					key: "czrlYueNum",
-					title: "热量月差值（GJ）",
+					key: "czRl",
+					title: "用热量",
 					minWidth: 140,
 					tooltip: true
 				},
 				{
 					key: "syl",
-					title: "卡余（t）",
-					minWidth: 110,
+					title: "卡余",
+					minWidth: 130,
 					tooltip: true
 				}
 			],
 			tbBody: [],
 			loading: true,
 			tableModel: {
-				times: undefined
+				times: [],
+				startTime: undefined,
+				endTime: undefined
 			}
 		}
 	},
@@ -167,30 +157,42 @@ export default {
 				showSpinner: false
 			})
 			this.$progress.start()
-			const res = await this.$api.table.selectDay(this.tableModel)
-			res.data.forEach((item) => {
-				if (
-					item.yhname.indexOf("合计") != -1 ||
-					item.yhname.indexOf("损失量") != -1 ||
-					item.yhname.indexOf("比例") != -1
-				) {
-					item.cellClassName = {
-						yhname: "font-12"
-					}
-				}
-			})
+			const res = await this.$api.table.selectAllByTimes(this.tableModel)
 			this.tbBody = res.data
 
 			this.loading = false
 			this.$progress.done()
 		},
 		async exportClick() {
+			this.$progress.configure({
+				showSpinner: false
+			})
+			this.$progress.start()
+			const res = await this.$api.table.selectAllByTimes(this.tableModel)
 			const tbHead = this.tbHead
-			const tbBody = this.tbBody
-			this.handleExcelClick(tbHead, tbBody, "日报表")
+			const tbBody = res.data
+			this.handleExcelClick(
+				["金山热力公司生产报表"],
+				[
+					`日期：${this.$moment().format("yyyy-MM-DD")} 制表人：${
+						this.$store.state.user.username
+					}`
+				],
+				tbHead,
+				tbBody,
+				"生产报表"
+			)
+			this.$progress.done()
 		},
 		timesChange(val) {
 			this.tableModel.times = val
+			if (val) {
+				this.tableModel.startTime = val[0]
+				this.tableModel.endTime = val[1]
+			} else {
+				this.tableModel.startTime = null
+				this.tableModel.endTime = null
+			}
 		},
 		rowClassName(row) {
 			if (row.yhname.indexOf("合计") != -1) {
@@ -204,8 +206,18 @@ export default {
 		}
 	},
 	created() {
-		const times = this.$moment().format("yyyy-MM-DD")
-		this.tableModel.times = times
+		this.tableModel.startTime = `${this.$moment()
+			.subtract(1, "days")
+			.format("yyyy-MM-DD")} 00:00:00`
+		this.tableModel.endTime = `${this.$moment().format(
+			"yyyy-MM-DD"
+		)} 00:00:00`
+		this.tableModel.times = [
+			`${this.$moment()
+				.subtract(1, "days")
+				.format("yyyy-MM-DD")} 00:00:00`,
+			`${this.$moment().format("yyyy-MM-DD")} 00:00:00`
+		]
 		this.getTable()
 	}
 }

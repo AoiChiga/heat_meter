@@ -28,11 +28,6 @@
 	background-color: rgba($color: #000, $alpha: 0.8);
 }
 
-.ivu-modal-header p,
-.ivu-modal-header-inner {
-	color: $primary !important;
-}
-
 .BMap_cpyCtrl {
 	display: none;
 }
@@ -64,18 +59,33 @@
 	transition: all 0.4s;
 }
 
-.ivu-spin-dot,
 .vxe-loading .vxe-loading--spinner:after,
-.vxe-loading .vxe-loading--spinner:before {
+.vxe-loading .vxe-loading--spinner:before,
+.el-date-table td.start-date span,
+.el-date-table td.end-date span {
 	background-color: $primary !important;
 }
-
+.el-date-table td.start-date span {
+	color: $white;
+}
+.el-date-table td.available:hover,
+.el-time-panel__btn.confirm {
+	color: $primary;
+}
 .el-menu--horizontal > .el-menu-item.is-active {
 	border-bottom-color: $primary;
 	color: $primary;
 }
+.el-button.is-plain:focus,
+.el-button.is-plain:hover {
+	border-color: $primary;
+	color: $primary;
+}
 
-.ivu-spin,
+.el-date-table td.today span {
+	color: $primary;
+}
+
 .el-tabs__item.is-active,
 .el-tabs__item:hover,
 .el-menu--horizontal > .el-menu-item.is-active,
@@ -83,24 +93,17 @@
 .el-menu--horizontal .el-menu-item:not(.is-disabled):hover,
 .el-pager li:hover,
 .el-pagination button:hover,
-.el-picker-panel__icon-btn:hover {
+.el-picker-panel__icon-btn:hover,
+.el-picker-panel__footer .el-button--text {
 	color: $primary !important;
 }
-.ivu-btn-ghost.ivu-btn-primary {
-	color: $primary !important;
-	border-color: $primary !important;
-	background-color: transparent !important;
-}
-.ivu-btn-primary {
-	background-color: $primary !important;
-	border-color: $primary !important;
-}
+
 .ivu-table-header {
 	color: $white !important;
 }
-.ivu-table th {
-	background-color: $primary !important;
-}
+// .ivu-table th {
+// 	background-color: $primary !important;
+// }
 
 .total-success-row td {
 	color: $green;
