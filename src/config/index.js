@@ -46,8 +46,10 @@ const token = {
 }
 
 const http = {
-	// baseURL: "http://192.168.1.26:8085/jsrl",
+	// baseURL: "http://192.168.0.101:8085/jsrl",
 	baseURL: "http://121.36.204.245:8082/jsrl",
+	// baseURL1: "http://192.168.0.101:8083/fm_new",
+	baseURL1: "http://121.36.204.245:8082/dbjc",
 	voucher: false,
 	timeout: 50000
 }
@@ -62,8 +64,6 @@ const company = {
 const map = {
 	ak: "HE5BlZinsvqCISbVv2ABE1DdDWPKgtGW"
 }
-
-
 
 export default {
 	navbar,

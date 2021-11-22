@@ -154,7 +154,12 @@ export default {
 						if (res.code == 200) {
 							this.$msg.success({
 								content: res.msg,
-								duration: 1
+								duration: 2
+							})
+						} else {
+							this.$msg.error({
+								content: res.msg,
+								duration: 2
 							})
 						}
 					})
@@ -178,7 +183,17 @@ export default {
 				})
 				this.$progress.start()
 				const res = await this.$api.info.sentZl(this.selectValveModel)
-				console.log(res)
+				if (res.code == 200) {
+					this.$msg.success({
+						content: res.msg,
+						duration: 2
+					})
+				} else {
+					this.$msg.error({
+						content: res.msg,
+						duration: 2
+					})
+				}
 				this.$progress.done()
 			}
 			// this.getTable()

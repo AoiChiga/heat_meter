@@ -54,21 +54,6 @@
 					<template v-if="item.append || false" slot="append">{{
 						item.append || ""
 					}}</template>
-					<!-- 选择器复合类型 -->
-					<el-select
-						slot="prepend"
-						v-if="item.select"
-						v-model="value['select']"
-						placeholder="请选择"
-						style="width: 60px"
-					>
-						<el-option
-							v-for="(opItem, index) in provinceList"
-							:key="index"
-							:label="opItem.label"
-							:value="opItem.value"
-						></el-option>
-					</el-select>
 				</el-input>
 				<!-- 文本域 -->
 				<el-input
@@ -263,21 +248,10 @@ export default {
 		return {
 			fileList: [],
 			visible: false,
-			preview: "",
-			provinceList: []
+			preview: ""
 		}
 	},
 	methods: {
-		setDefaultValue() {
-			const formData = { ...this.value }
-			//设置默认值
-			this.formConfig.formItemList.forEach(({ key, value }) => {
-				if (formData[key] === undefined || formData[key] === null) {
-					formData[key] = value
-				}
-			})
-			this.$emit("input", formData)
-		},
 		/**
 		 * 文件移除时的钩子
 		 * param file fileList
@@ -323,56 +297,11 @@ export default {
 		 */
 		handleError() {
 			// console.log(err, file, fileList)
-		},
-		getProvinceList() {
-			const province = [
-				"京",
-				"津",
-				"沪",
-				"渝",
-				"冀",
-				"豫",
-				"云",
-				"辽",
-				"黑",
-				"湘",
-				"皖",
-				"鲁",
-				"新",
-				"苏",
-				"浙",
-				"赣",
-				"鄂",
-				"桂",
-				"甘",
-				"晋",
-				"蒙",
-				"陕",
-				"吉",
-				"闽",
-				"贵",
-				"粤",
-				"青",
-				"藏",
-				"川",
-				"宁",
-				"琼"
-			]
-			let arr = []
-			province.forEach((item) => {
-				arr.push({
-					label: item,
-					value: item
-				})
-			})
-			this.provinceList = arr
 		}
 	},
 	mounted() {
-		this.setDefaultValue()
 	},
 	created() {
-		this.getProvinceList()
 		const token = getToken()
 		this.token = { token: token }
 	}

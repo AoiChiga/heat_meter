@@ -20,16 +20,6 @@
 								{{ item.label }}
 							</i-option>
 						</i-select>
-						<zy-date-picker
-							size="small"
-							datePickerType="datetimerange"
-							vf="yyyy-MM-dd HH:mm:ss"
-							v-model="tableModel.times"
-							class="mr-1"
-							width="330px"
-							datep="选择日期"
-							@change="timesChange"
-						></zy-date-picker>
 						<zy-btn
 							:btnIcon="searchIcon"
 							btnTitle="搜索"
@@ -131,13 +121,7 @@ export default {
 				{
 					key: "yhname",
 					title: "站名",
-					width: 95,
-					tooltip: true
-				},
-				{
-					key: "adress",
-					title: "站点编号",
-					width: 90,
+					minWidth: 100,
 					tooltip: true
 				},
 				{
@@ -147,69 +131,57 @@ export default {
 					tooltip: true
 				},
 				{
-					slot: "mj",
-					title: "门禁",
-					width: 65,
+					key: "yl",
+					title: "压力",
+					width: 85,
 					tooltip: true
 				},
 				{
-					slot: "gd",
-					title: "供电",
-					width: 65,
+					key: "wd",
+					title: "温度",
+					width: 110,
+					tooltip: true
+				},
+				{
+					key: "ssll",
+					title: "瞬时流量",
+					width: 110,
+					tooltip: true
+				},
+				{
+					key: "ljll",
+					title: "累计流量",
+					width: 110,
+					tooltip: true
+				},
+				{
+					key: "ssrl",
+					title: "瞬时热量",
+					width: 110,
+					tooltip: true
+				},
+				{
+					key: "rh",
+					title: "热焓值",
+					width: 110,
+					tooltip: true
+				},
+				{
+					key: "ljrl",
+					title: "累计热量",
+					width: 110,
 					tooltip: true
 				},
 				{
 					key: "syl",
 					title: "卡余",
-					width: 95,
+					width: 110,
 					tooltip: true
 				},
 				{
 					key: "fw",
 					title: "设定阀位",
 					width: 90,
-					tooltip: true
-				},
-				{
-					key: "ssll",
-					title: "瞬时流量",
-					width: 95,
-					tooltip: true
-				},
-				{
-					key: "ssrl",
-					title: "瞬时热量",
-					width: 95,
-					tooltip: true
-				},
-				{
-					key: "ljll",
-					title: "累计流量",
-					width: 95,
-					tooltip: true
-				},
-				{
-					key: "ljrl",
-					title: "累计热量",
-					width: 95,
-					tooltip: true
-				},
-				{
-					key: "rh",
-					title: "热焓值",
-					width: 95,
-					tooltip: true
-				},
-				{
-					key: "wd",
-					title: "温度",
-					width: 95,
-					tooltip: true
-				},
-				{
-					key: "yl",
-					title: "压力",
-					width: 85,
 					tooltip: true
 				},
 				{
@@ -225,21 +197,15 @@ export default {
 					tooltip: true
 				},
 				{
-					key: "yc",
-					title: "压差",
-					width: 85,
+					slot: "mj",
+					title: "门禁",
+					width: 65,
 					tooltip: true
 				},
 				{
-					key: "czds",
-					title: "充值吨数",
-					width: 95,
-					tooltip: true
-				},
-				{
-					key: "czsj",
-					title: "充值时间",
-					minWidth: 110,
+					slot: "gd",
+					title: "供电",
+					width: 65,
 					tooltip: true
 				}
 			],
@@ -302,15 +268,6 @@ export default {
 				"实时数据"
 			)
 			this.$progress.done()
-		},
-		timesChange(val) {
-			if (val) {
-				this.tableModel.startTime = val[0]
-				this.tableModel.endTime = val[1]
-			} else {
-				this.tableModel.startTime = null
-				this.tableModel.endTime = null
-			}
 		},
 		rowClassName(row) {
 			if (row.yhname.indexOf("合计") != -1) {

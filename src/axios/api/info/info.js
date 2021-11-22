@@ -1,4 +1,5 @@
 import http from "../../http"
+import http1 from '../../http1'
 const jsInfo = {
     //站点编号查询
 	selectAdress() {
@@ -10,7 +11,7 @@ const jsInfo = {
 	},
     //遥测
 	sentZl(model) {
-		return http.post("socket/sentZl", model)
+		return http1.post("YhInfo/findZL.action", model)
 	}
 }
 export default jsInfo
