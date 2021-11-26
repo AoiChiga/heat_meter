@@ -6,6 +6,7 @@
 		:size="size"
 		:type="btnType"
 		:ghost="ghost"
+		:loading="loading"
 	>
 		<i :class="[btnIcon]"></i>
 		{{ btnTitle }}</i-button
@@ -45,6 +46,10 @@ export default {
 			default: ""
 		},
 		ghost: {
+			type: Boolean,
+			default: false
+		},
+		loading: {
 			type: Boolean,
 			default: false
 		}

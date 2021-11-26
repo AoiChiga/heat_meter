@@ -3,6 +3,8 @@ import { Message } from "iview"
 import store from "../store"
 import { getToken } from "../utils/cookies"
 import conf from "../config"
+import "nprogress/nprogress.css"
+import NProgress from "nprogress"
 
 const http = axios.create({
 	baseURL: conf.http.baseURL1,
@@ -13,6 +15,10 @@ const http = axios.create({
 // 请求拦截
 http.interceptors.request.use(
 	(config) => {
+		NProgress.configure({
+			showSpinner: false
+		})
+		NProgress.start()
 		const token = store.getters.token ? store.getters.token : getToken()
 		if (token) {
 			config.headers[conf.token.key] = token
@@ -36,8 +42,10 @@ http.interceptors.response.use(
 				content: res.msg || "Error",
 				duration: 1
 			})
+			NProgress.done()
 			return Promise.reject(new Error(res.msg || "Error"))
 		} else {
+			NProgress.done()
 			return res
 		}
 	},

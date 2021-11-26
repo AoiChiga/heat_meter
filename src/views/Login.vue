@@ -178,10 +178,6 @@ export default {
 		}
 	},
 	created() {
-		this.$progress.configure({
-			showSpinner: false
-		})
-		this.$progress.start()
 		let that = this
 		document.onkeypress = function(e) {
 			var keycode = document.all ? event.keyCode : e.which
@@ -190,8 +186,6 @@ export default {
 				return false
 			}
 		}
-
-		this.$progress.done()
 	},
 	methods: {
 		login() {

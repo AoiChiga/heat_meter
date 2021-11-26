@@ -5,6 +5,7 @@ export default {
 	},
 	data() {
 		return {
+			exLoading: false,
 			btnTitle: "搜索",
 			btnType: "primary",
 			height: "350px",

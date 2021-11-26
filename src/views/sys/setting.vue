@@ -126,14 +126,9 @@ export default {
 	},
 	methods: {
 		async getTable() {
-			this.$progress.configure({
-				showSpinner: false
-			})
-			this.$progress.start()
 			const res = await this.$api.table.selectNanBei()
 			this.cardList[0].tbBody = res.nan
 			this.cardList[1].tbBody = res.bei
-			this.$progress.done()
 		},
 		confirmClick() {
 			if (!this.selectValveModel.yhname) {
@@ -178,10 +173,6 @@ export default {
 					duration: 2
 				})
 			} else {
-				this.$progress.configure({
-					showSpinner: false
-				})
-				this.$progress.start()
 				const res = await this.$api.info.sentZl(this.selectValveModel)
 				if (res.code == 200) {
 					this.$msg.success({
@@ -194,7 +185,6 @@ export default {
 						duration: 2
 					})
 				}
-				this.$progress.done()
 			}
 			// this.getTable()
 		},

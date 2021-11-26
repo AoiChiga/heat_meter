@@ -38,7 +38,8 @@
 						<zy-btn
 							btnTitle="导出"
 							@click="exportClick"
-							:btnIcon="exportIcon"
+							:loading="exLoading"
+							btnType="error"
 						></zy-btn>
 						<!-- <i-select
 							class="mr-1"
@@ -144,67 +145,67 @@ export default {
 				{
 					key: "yl",
 					title: "压力",
-					width: 85,
+					minWidth: 85,
 					tooltip: true
 				},
 				{
 					key: "wd",
 					title: "温度",
-					width: 110,
+					minWidth: 110,
 					tooltip: true
 				},
 				{
 					key: "ssll",
 					title: "瞬时流量",
-					width: 110,
+					minWidth: 110,
 					tooltip: true
 				},
 				{
 					key: "ljll",
 					title: "累计流量",
-					width: 110,
+					minWidth: 110,
 					tooltip: true
 				},
 				{
 					key: "ssrl",
 					title: "瞬时热量",
-					width: 110,
+					minWidth: 110,
 					tooltip: true
 				},
 				{
 					key: "rh",
 					title: "热焓值",
-					width: 110,
+					minWidth: 110,
 					tooltip: true
 				},
 				{
 					key: "ljrl",
 					title: "累计热量",
-					width: 110,
+					minWidth: 110,
 					tooltip: true
 				},
 				{
 					key: "syl",
 					title: "卡余",
-					width: 110,
+					minWidth: 110,
 					tooltip: true
 				},
 				{
 					key: "fw",
 					title: "设定阀位",
-					width: 90,
+					minWidth: 90,
 					tooltip: true
 				},
 				{
 					key: "md",
 					title: "密度",
-					width: 85,
+					minWidth: 85,
 					tooltip: true
 				},
 				{
 					key: "pl",
 					title: "频率",
-					width: 85,
+					minWidth: 85,
 					tooltip: true
 				},
 				{
@@ -229,10 +230,6 @@ export default {
 	},
 	methods: {
 		async getTable() {
-			this.$progress.configure({
-				showSpinner: false
-			})
-			this.$progress.start()
 			this.loading = true
 			const model = {
 				...this.pageModel,
@@ -253,13 +250,9 @@ export default {
 			this.tbBody = res.data
 			this.total = res.count
 			this.loading = false
-			this.$progress.done()
 		},
 		async exportClick() {
-			this.$progress.configure({
-				showSpinner: false
-			})
-			this.$progress.start()
+			this.exLoading = true
 			const model = {
 				...this.tableModel,
 				...{ pageNum: 1, pageSize: this.total }
@@ -278,7 +271,7 @@ export default {
 				tbBody,
 				"历史数据"
 			)
-			this.$progress.done()
+			this.exLoading = false
 		},
 		timesChange(val) {
 			if (val) {

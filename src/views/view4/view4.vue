@@ -22,7 +22,8 @@
 						<zy-btn
 							btnTitle="导出"
 							@click="exportClick"
-							:btnIcon="exportIcon"
+							:loading="exLoading"
+							btnType="error"
 						></zy-btn>
 						<!-- <i-select
 							class="mr-1"
@@ -152,10 +153,6 @@ export default {
 	},
 	methods: {
 		async getTable() {
-			this.$progress.configure({
-				showSpinner: false
-			})
-			this.$progress.start()
 			const res = await this.$api.table.selectYue(this.tableModel)
 			res.data.forEach((item) => {
 				if (
@@ -170,13 +167,9 @@ export default {
 			})
 			this.tbBody = res.data
 			this.loading = false
-			this.$progress.done()
 		},
 		async exportClick() {
-			this.$progress.configure({
-				showSpinner: false
-			})
-			this.$progress.start()
+			this.exLoading = true
 			const res = await this.$api.table.selectYue(this.tableModel)
 			const tbHead = this.tbHead
 			const tbBody = res.data
@@ -191,7 +184,7 @@ export default {
 				tbBody,
 				"月报表"
 			)
-			this.$progress.done()
+			this.exLoading = false
 		},
 		timesChange(val) {
 			this.tableModel.times = val

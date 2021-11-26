@@ -22,7 +22,8 @@
 						<zy-btn
 							btnTitle="导出"
 							@click="exportClick"
-							:btnIcon="exportIcon"
+							:loading="exLoading"
+							btnType="error"
 						></zy-btn>
 						<!-- <i-select
 							class="mr-1"
@@ -120,13 +121,13 @@ export default {
 				{
 					key: "bendRl",
 					title: "截止累计热量",
-					minWidth: 130,
+					minWidth: 120,
 					tooltip: true
 				},
 				{
 					key: "bstartRl",
 					title: "起始累计热量",
-					minWidth: 110,
+					minWidth: 120,
 					tooltip: true
 				},
 				{
@@ -153,21 +154,13 @@ export default {
 	},
 	methods: {
 		async getTable() {
-			this.$progress.configure({
-				showSpinner: false
-			})
-			this.$progress.start()
 			const res = await this.$api.table.selectAllByTimes(this.tableModel)
 			this.tbBody = res.data
 
 			this.loading = false
-			this.$progress.done()
 		},
 		async exportClick() {
-			this.$progress.configure({
-				showSpinner: false
-			})
-			this.$progress.start()
+			this.exLoading = true
 			const res = await this.$api.table.selectAllByTimes(this.tableModel)
 			const tbHead = this.tbHead
 			const tbBody = res.data
@@ -182,7 +175,7 @@ export default {
 				tbBody,
 				"生产报表"
 			)
-			this.$progress.done()
+			this.exLoading = false
 		},
 		timesChange(val) {
 			this.tableModel.times = val
