@@ -33,27 +33,9 @@ import config from "./config"
 Vue.prototype.$config = config
 
 //element
-import {
-	Row,
-	Col,
-	Menu,
-	MenuItem,
-	Header,
-	DatePicker,
-	Form,
-	FormItem,
-	MessageBox
-} from "element-ui"
+import element from "element-ui"
 import "element-ui/lib/theme-chalk/index.css"
-Vue.component("el-row", Row)
-Vue.component("el-col", Col)
-Vue.component("el-menu", Menu)
-Vue.component("el-menu-item", MenuItem)
-Vue.component("el-header", Header)
-Vue.component("el-date-picker", DatePicker)
-Vue.component("el-form", Form)
-Vue.component("el-form-item", FormItem)
-Vue.prototype.$confirm = MessageBox
+Vue.use(element)
 
 //style
 import "./assets/css/style.scss"

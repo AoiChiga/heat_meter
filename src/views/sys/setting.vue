@@ -1,8 +1,24 @@
 <template>
 	<div class="setting h-100">
 		<div class="el-card__body">
-			<el-row class="mb-1">
-				<el-col>
+			<el-row class="mb-1" :gutter="10">
+				<el-col :span="12">
+					<i-card>
+						<p slot="title" class="text-primary">
+							<i class="el-icon-user"></i>
+							用户注册
+						</p>
+						<zy-form
+							ref="zyForm"
+							:formConfig="formConfig"
+							:value="userModel"
+						></zy-form>
+						<zy-btn ghost btnTitle="注册" @click="registeClick">
+						</zy-btn>
+					</i-card>
+				</el-col>
+				<i-divider type="vertical"></i-divider>
+				<el-col :span="12">
 					<div class="d-flex mb-1">
 						<i-select
 							clearable
@@ -74,10 +90,10 @@
 </template>
 <script>
 import zyBtn from "../../mixins/buttons/zy-btn"
-
+import zyForm from "../../components/zy-form.vue"
 export default {
 	mixins: [zyBtn],
-	components: {},
+	components: { zyForm },
 	data() {
 		return {
 			setValveOption: [],
@@ -121,7 +137,68 @@ export default {
 					tbBody: []
 				}
 			],
-			yhnameList: []
+			yhnameList: [],
+			userModel: {},
+			formConfig: {
+				formItemList: [
+					{
+						type: "input",
+						label: "用户名：",
+						prop: "username",
+						width: "160px",
+						onchange() {}
+					},
+					{
+						type: "input",
+						label: "密码：",
+						prop: "password",
+						onchange() {},
+						width: "160px",
+						inputType: "password",
+						password: true
+					},
+					{
+						type: "select",
+						label: "角色：",
+						prop: "role",
+						onchange() {},
+						width: "160px",
+						opList: [
+							{
+								label: "管理员",
+								value: "管理员"
+							},
+							{
+								label: "操作员",
+								value: "操作员"
+							}
+						]
+					}
+				],
+				rules: {
+					username: [
+						{
+							required: true,
+							trigger: "blur",
+							message: "不能为空"
+						}
+					],
+					password: [
+						{
+							required: true,
+							trigger: "blur",
+							message: "不能为空"
+						}
+					],
+					role: [
+						{
+							required: true,
+							trigger: "blur",
+							message: "不能为空"
+						}
+					]
+				}
+			}
 		}
 	},
 	methods: {
@@ -201,18 +278,43 @@ export default {
 				})
 			})
 			this.yhnameList = arr1
-			// let arr2 = []
-			// const res2 = await this.$api.info.selectYhName()
-			// res2.data.forEach((item) => {
-			// 	arr2.push({
-			// 		label: item.yhname,
-			// 		value: item.yhname
-			// 	})
-			// })
-			// this.yhnameList = arr2
 		},
 		yhnameChange(val) {
 			this.selectValveModel.yhname = val
+		},
+		registeClick() {
+			this.$refs.zyForm.$children[0].validate((valid) => {
+				if (valid) {
+					this.$confirm("确定注册吗？", "提示", {
+						confirmButtonText: "确定",
+						cancelButtonText: "取消",
+						type: "warning"
+					})
+						.then(async () => {
+							const res = await this.$api.user.insertUsers(
+								this.userModel
+							)
+							if (res.code == 200) {
+								this.$msg.success({
+									content: res.msg,
+									duration: 2
+								})
+								this.userModel = {}
+							} else {
+								this.$msg.error({
+									content: res.msg,
+									duration: 2
+								})
+							}
+						})
+						.catch(() => {
+							this.$msg.info({
+								content: "取消操作",
+								duration: 1
+							})
+						})
+				}
+			})
 		}
 	},
 	created() {
