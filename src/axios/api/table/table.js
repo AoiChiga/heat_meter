@@ -23,6 +23,10 @@ const jsTable = {
 	//根据时间段查询累计流量
 	selectAllByTimes(model) {
 		return http.post("info/selectAllByTimes", model)
+	},
+	//卡号
+	selectKaXx(model) {
+		return http.post("info/selectKaXx", model)
 	}
 }
 export default jsTable

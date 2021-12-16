@@ -85,17 +85,47 @@
 					</i-card>
 				</el-col>
 			</el-row>
+			<i-divider></i-divider>
+			<el-row>
+				<div class="mb-1">
+					<span class="text-primary">按照站名查看：</span>
+					<i-select
+						clearable
+						class="mr-1"
+						placeholder="站点名称"
+						v-model="tableModel.yhname"
+						style="width:120px"
+						@on-change="tableModelChange"
+					>
+						<i-option
+							v-for="item in yhnameList"
+							:value="item.value"
+							:key="item.value"
+						>
+							{{ item.label }}
+						</i-option>
+					</i-select>
+				</div>
+				<table-trans
+					v-if="flag"
+					:originData="originData"
+					:transTitle="transTitle"
+				></table-trans>
+			</el-row>
 		</div>
 	</div>
 </template>
 <script>
 import zyBtn from "../../mixins/buttons/zy-btn"
 import zyForm from "../../components/zy-form.vue"
+import tableTrans from "../../components/table-trans.vue"
 export default {
 	mixins: [zyBtn],
-	components: { zyForm },
+	components: { zyForm, tableTrans },
 	data() {
 		return {
+			transTitle: [],
+			originData: [],
 			setValveOption: [],
 			setValve: undefined,
 			selectValveModel: {
@@ -198,7 +228,9 @@ export default {
 						}
 					]
 				}
-			}
+			},
+			tableModel: {},
+			flag: false
 		}
 	},
 	methods: {
@@ -282,6 +314,10 @@ export default {
 		yhnameChange(val) {
 			this.selectValveModel.yhname = val
 		},
+		tableModelChange(val) {
+			this.tableModel.yhname = val
+			this.selectKaXx()
+		},
 		registeClick() {
 			this.$refs.zyForm.$children[0].validate((valid) => {
 				if (valid) {
@@ -315,6 +351,24 @@ export default {
 						})
 				}
 			})
+		},
+		async selectKaXx() {
+			let arr = []
+			let dataArr = []
+			this.flag = false
+			const res = await this.$api.table.selectKaXx(this.tableModel)
+			// this.originData = res.data
+			res.data.forEach((item) => {
+				arr.push(item.yhname)
+				dataArr.push({
+					cards: item.cards,
+					Sim: item.Sim
+				})
+			})
+			arr.unshift("站名")
+			this.transTitle = arr
+			this.originData = dataArr
+			this.flag = true
 		}
 	},
 	created() {
@@ -326,6 +380,7 @@ export default {
 		}
 		this.getList()
 		this.getTable()
+		this.selectKaXx()
 	}
 }
 </script>

@@ -1,5 +1,14 @@
 @import "./common.scss";
-
+//滚动条
+::-webkit-scrollbar {
+	/*垂直滚动条的宽*/
+	width: 7px;
+	height: 7px;
+}
+.el-table__row {
+	color: $primary;
+	font-size: 13px;
+}
 #nprogress .bar {
 	background: $primary !important; //自定义颜色
 }
