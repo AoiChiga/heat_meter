@@ -51,7 +51,7 @@ const http = {
 	// baseURL1: "http://192.168.0.101:8083/fm_new",
 	baseURL1: "http://121.36.204.245:8082/dbjc",
 	voucher: false,
-	timeout: 50000
+	timeout: 9999990
 }
 
 const company = {

@@ -119,6 +119,12 @@ export default {
 	data() {
 		return {
 			tbHead: [
+                {
+					key: "nums",
+					title: "序号",
+					width: 70,
+					tooltip: true
+				},
 				{
 					key: "yhname",
 					title: "站名",
