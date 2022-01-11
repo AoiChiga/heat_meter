@@ -12,6 +12,10 @@ const jsInfo = {
     //遥测
 	sentZl(model) {
 		return http1.post("YhInfo/findZL.action", model)
-	}
+    },
+    //报警信息提示
+    baojinTs () {
+        return http.post("info/baojinTs", {})
+    }
 }
 export default jsInfo

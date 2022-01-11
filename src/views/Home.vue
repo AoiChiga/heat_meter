@@ -16,7 +16,7 @@
 			<el-col :span="4" class="header-company ml-2 font-20">
 				<p class="woh">{{ $config.company.name }}</p>
 			</el-col>
-			<el-col :span="20" class="d-flex jc-between">
+			<el-col :span="20" class="d-flex jc-between ova">
 				<!-- 菜单 -->
 				<el-menu
 					class="d-flex"
@@ -63,6 +63,17 @@
 						>
 						</el-color-picker>
 					</div> -->
+					<div class="d-flex mr-3 mt-1">
+						<span class="text-primary lh-16" style="width: 100px"
+							>报警声音开关：</span
+						>
+						<el-switch
+							v-model="soundSwitch"
+							active-color="#13ce66"
+							inactive-color="#ff4949"
+						>
+						</el-switch>
+					</div>
 					<div class="mr-2 text-primary lh-18">
 						<i class="iconfont icon-user"></i>
 						{{
@@ -82,7 +93,7 @@
 			<!-- 视图 -->
 			<div class="home-view box-border h-100">
 				<!-- 主要试图 -->
-				<div class="view h-100"> <router-view /></div>
+				<div class="view h-100"><router-view /></div>
 			</div>
 		</div>
 	</div>
@@ -99,7 +110,9 @@ export default {
 		return {
 			//侧边栏
 			navbar: this.$config.navbar,
-			themeColor: "#61B2EE"
+			themeColor: "#61B2EE",
+			zyAudio: new Audio(),
+			soundSwitch: false
 		}
 	},
 	methods: {
@@ -130,11 +143,43 @@ export default {
 			} else {
 				setColor("#61B2EE")
 			}
+		},
+		async selectNowNotice() {
+			const res = await this.$api.info.baojinTs()
+			if (res.data.length) {
+				this.playAlarm(res.data)
+			}
+		},
+		playAlarm(msg) {
+			if (this.soundSwitch) {
+				this.zyAudio = new Audio()
+				this.zyAudio.src = "http://121.36.204.245:8082/yinpin/12297.wav"
+				this.zyAudio.play()
+				this.zyAudio.addEventListener("ended", () => {
+					this.zyAudio.pause()
+					this.zyAudio = null
+				})
+			}
+			let arr = []
+			msg.forEach((item) => {
+				arr.push(
+					`<i><span class='text-gray-darker'><i class='iconfont icon-baojing text-yellow font-22'></i>${item}</span></i>`
+				)
+			})
+			arr = arr.join("<br/>")
+			this.$notify({
+				title: "实时报警",
+				dangerouslyUseHTMLString: true,
+				message: arr,
+				// type: "warning",
+				position: "bottom-right",
+				iconClass: "iconfont icon-baojing1 text-warning"
+			})
 		}
 	},
 	created() {
-		// this.initThemeColor()
 		this.loginInfo()
+		setInterval(this.selectNowNotice, 1000)
 	}
 }
 </script>

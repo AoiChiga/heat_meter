@@ -12,7 +12,7 @@
 				v-for="(item, index) in transTitle"
 				:key="index"
 				align="center"
-				min-width="131"
+				min-width="133"
 				:label="item"
 				show-overflow-tooltip
 			>
