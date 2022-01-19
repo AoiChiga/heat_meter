@@ -86,10 +86,10 @@
 								v-else
 							></i>
 						</template>
-						<template slot-scope="{ row }" slot="gd">
+						<template slot-scope="{ row }" slot="zxStates">
 							<i
 								class="iconfont icon-wUPSgongdianzhuangzhi text-red font-22"
-								v-if="row.gd == '1'"
+								v-if="row.zxStates == '离线'"
 							></i>
 							<i
 								class="iconfont icon-zuoce-gongdian text-green font-22"
@@ -119,7 +119,7 @@ export default {
 	data() {
 		return {
 			tbHead: [
-                {
+				{
 					key: "nums",
 					title: "序号",
 					width: 70,
@@ -210,7 +210,7 @@ export default {
 					tooltip: true
 				},
 				{
-					slot: "gd",
+					slot: "zxStates",
 					title: "供电",
 					width: 65,
 					tooltip: true
@@ -269,13 +269,16 @@ export default {
 			this.exLoading = false
 		},
 		rowClassName(row) {
-			if (row.yhname.indexOf("合计") != -1) {
-				return "total-success-row UnidreamLED font-18"
-			} else if (row.yhname.indexOf("损失量") != -1) {
-				return "loss-success-row UnidreamLED font-18"
-			} else if (row.yhname.indexOf("比例") != -1) {
-				return "proportion-success-row UnidreamLED font-18"
+			if (row.zxStates != "在线") {
+				return "loss-success-row"
 			}
+			// if (row.yhname.indexOf("合计") != -1) {
+			// 	return "total-success-row UnidreamLED font-18"
+			// } else if (row.yhname.indexOf("损失量") != -1) {
+			// 	return "loss-success-row UnidreamLED font-18"
+			// } else if (row.yhname.indexOf("比例") != -1) {
+			// 	return "proportion-success-row UnidreamLED font-18"
+			// }
 			return ""
 		},
 		btnClick() {
